@@ -1,0 +1,6 @@
+h1.page-title { font-size: 21px; }
+p.description { max-width: 60ch; text-wrap: balance; }
+
+#dashboard .content-top { display: none; }
+#regenerate-fixtures .content-top { display: none; }
+

@@ -1,0 +1,22 @@
+{% extends '@EasyAdmin/layout.html.twig' %}
+
+{% block body_id 'regenerate-fixtures' %}
+
+{% block main %}
+    <h1 class="page-title">Regenerate the fixtures data used in this project</h1>
+
+    <p class="description">
+        This demo project includes some pre-generated fixtures so you can start
+        using it immediately.
+    </p>
+
+    <p class="description">
+        We use <a target="_blank" href="https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html">Foundry</a>,
+        which makes creating fixtures in Symfony applications fun again.
+        If you want, you can regenerate the fixtures data by clicking the button below.
+    </p>
+
+    <form method="post" action="{{ path('admin_regenerate_fixtures') }}">
+        <button type="submit" class="btn btn-primary">Regenerate Fixtures</button>
+    </form>
+{% endblock %}
