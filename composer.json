@@ -1,6 +1,8 @@
 {
+    "name": "easycorp/easyadmin-demo",
+    "license": "MIT",
     "type": "project",
-    "license": "proprietary",
+    "description": "EasyAdmin Demo Application",
     "minimum-stability": "stable",
     "prefer-stable": true,
     "require": {
