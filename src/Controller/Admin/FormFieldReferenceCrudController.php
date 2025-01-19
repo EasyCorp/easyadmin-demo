@@ -76,48 +76,48 @@ class FormFieldReferenceCrudController extends AbstractCrudController
         $choices = ['Choice 1' => 0, 'Choice 2' => 1, 'Choice 3' => 2];
 
         return [
-            FormField::addPanel('Text Fields'),
+            FormField::addFieldset('Text Fields'),
             TextField::new('text', 'Text Field'),
             SlugField::new('slug', 'Slug Field')->setTargetFieldName('text'),
             TextareaField::new('textarea', 'Textarea Field'),
             TextEditorField::new('textEditor', 'Text Editor Field'),
             CodeEditorField::new('codeEditor', 'Code Editor Field')->setNumOfRows(12)->setLanguage('php'),
 
-            FormField::addPanel('Choice Fields'),
+            FormField::addFieldset('Choice Fields'),
             BooleanField::new('boolean', 'Boolean Field'),
             ChoiceField::new('autocomplete', 'Choice Field (autocomplete)')->setChoices($choices)->allowMultipleChoices()->autocomplete(),
             ChoiceField::new('checkbox', 'Choice Field (checkbox)')->setChoices($choices)->allowMultipleChoices()->renderExpanded(),
             ChoiceField::new('radiobutton', 'Choice Field (radiobutton)')->setChoices($choices)->renderExpanded(),
 
-            FormField::addPanel('Numeric Fields'),
+            FormField::addFieldset('Numeric Fields'),
             IntegerField::new('integer', 'Integer Field'),
             NumberField::new('decimal', 'Number Field'),
             PercentField::new('percent', 'Percent Field')->setColumns(2),
             FormField::addRow(),
             MoneyField::new('money', 'Money Field')->setCurrency('EUR')->setColumns(3),
 
-            FormField::addPanel('Date and Time Fields'),
+            FormField::addFieldset('Date and Time Fields'),
             DateField::new('date', 'Date Field'),
             TimeField::new('time', 'Time Field'),
             DateTimeField::new('datetime', 'DateTime Field'),
             TimezoneField::new('timezone', 'Timezone Field'),
 
-            FormField::addPanel('Internationalization Fields'),
+            FormField::addFieldset('Internationalization Fields'),
             CountryField::new('country', 'Country Field'),
             CurrencyField::new('currency', 'Currency Field'),
             LanguageField::new('language', 'Language Field'),
             LocaleField::new('locale', 'Locale Field'),
 
-            FormField::addPanel('Association & Collection Fields'),
+            FormField::addFieldset('Association & Collection Fields'),
             ArrayField::new('array', 'Array Field'),
             AssociationField::new('author', 'Association Field'),
             CollectionField::new('collectionSimple', 'Collection Field (simple)')->setFormTypeOption('entry_type', CollectionSimpleType::class),
             CollectionField::new('collectionComplex', 'Collection Field (complex)')->setFormTypeOption('entry_type', CollectionComplexType::class)->setEntryIsComplex(true),
 
-            FormField::addPanel('Image Fields'),
+            FormField::addFieldset('Image Fields'),
             ImageField::new('image', 'Image Field')->setUploadDir('/public/images/'),
 
-            FormField::addPanel('Other Fields'),
+            FormField::addFieldset('Other Fields'),
             IdField::new('id', 'Id Field')->setColumns(2),
             FormField::addRow(),
             ColorField::new('color', 'Color Field'),
