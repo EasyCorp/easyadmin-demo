@@ -11,9 +11,9 @@
         "ext-iconv": "*",
         "doctrine/dbal": "^3.9.4",
         "doctrine/doctrine-bundle": "^2.13.2",
-        "doctrine/doctrine-migrations-bundle": "^3.4",
+        "doctrine/doctrine-migrations-bundle": "^3.4.1",
         "doctrine/orm": "^3.3.1",
-        "easycorp/easyadmin-bundle": "^4.22.2",
+        "easycorp/easyadmin-bundle": "^4.24.0",
         "phpdocumentor/reflection-docblock": "^5.6.1",
         "phpstan/phpdoc-parser": "^2.0",
         "symfony/asset": "7.2.*",
@@ -45,8 +45,8 @@
         "symfony/validator": "7.2.*",
         "symfony/web-link": "7.2.*",
         "symfony/yaml": "7.2.*",
-        "twig/extra-bundle": "^2.12|^3.18",
-        "twig/twig": "^2.12|^3.18"
+        "twig/extra-bundle": "^2.12|^3.19",
+        "twig/twig": "^2.12|^3.19"
     },
     "config": {
         "allow-plugins": {
@@ -108,6 +108,6 @@
         "symfony/phpunit-bridge": "^7.2",
         "symfony/stopwatch": "7.2.*",
         "symfony/web-profiler-bundle": "7.2.*",
-        "zenstruck/foundry": "^2.3.1"
+        "zenstruck/foundry": "^2.3.2"
     }
 }
