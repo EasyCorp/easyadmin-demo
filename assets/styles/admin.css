@@ -4,3 +4,16 @@ p.description { max-width: 60ch; text-wrap: balance; }
 #dashboard .content-top { display: none; }
 #regenerate-fixtures .content-top { display: none; }
 
+.ea-locale-switcher {
+    padding-inline-start: var(--sidebar-menu-items-padding-left);
+    list-style: none;
+}
+
+.ea-locale-switcher .icon {
+    block-size: 16px;
+    color: var(--sidebar-menu-icon-color);
+    flex-shrink: 0;
+    inline-size: 1.25em;
+    margin-inline-end: 10px;
+    text-align: center;
+}
