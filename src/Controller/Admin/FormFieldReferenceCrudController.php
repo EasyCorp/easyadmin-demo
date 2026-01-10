@@ -60,7 +60,7 @@ class FormFieldReferenceCrudController extends AbstractCrudController
     public function configureCrud(Crud $crud): Crud
     {
         return $crud
-            ->setPageTitle(Crud::PAGE_NEW, 'Form Field Reference');
+            ->setPageTitle(Crud::PAGE_NEW, 'menu.form_field_reference');
     }
 
     public function configureActions(Actions $actions): Actions
@@ -73,57 +73,57 @@ class FormFieldReferenceCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
-        $choices = ['Choice 1' => 0, 'Choice 2' => 1, 'Choice 3' => 2];
+        $choices = ['choice.1' => 0, 'choice.2' => 1, 'choice.3' => 2];
 
         return [
-            FormField::addFieldset('Text Fields'),
-            TextField::new('text', 'Text Field'),
-            SlugField::new('slug', 'Slug Field')->setTargetFieldName('text'),
-            TextareaField::new('textarea', 'Textarea Field'),
-            TextEditorField::new('textEditor', 'Text Editor Field'),
-            CodeEditorField::new('codeEditor', 'Code Editor Field')->setNumOfRows(12)->setLanguage('php'),
+            FormField::addFieldset('field_group.text'),
+            TextField::new('text', 'field.text'),
+            SlugField::new('slug', 'field.slug')->setTargetFieldName('text'),
+            TextareaField::new('textarea', 'field.textarea'),
+            TextEditorField::new('textEditor', 'field.text_editor'),
+            CodeEditorField::new('codeEditor', 'field.code_editor')->setNumOfRows(12)->setLanguage('php'),
 
-            FormField::addFieldset('Choice Fields'),
-            BooleanField::new('boolean', 'Boolean Field'),
-            ChoiceField::new('autocomplete', 'Choice Field (autocomplete)')->setChoices($choices)->allowMultipleChoices()->autocomplete(),
-            ChoiceField::new('checkbox', 'Choice Field (checkbox)')->setChoices($choices)->allowMultipleChoices()->renderExpanded(),
-            ChoiceField::new('radiobutton', 'Choice Field (radiobutton)')->setChoices($choices)->renderExpanded(),
+            FormField::addFieldset('field_group.choice'),
+            BooleanField::new('boolean', 'field.boolean'),
+            ChoiceField::new('autocomplete', 'field.choice_autocomplete')->setChoices($choices)->allowMultipleChoices()->autocomplete(),
+            ChoiceField::new('checkbox', 'field.choice_checkbox')->setChoices($choices)->allowMultipleChoices()->renderExpanded(),
+            ChoiceField::new('radiobutton', 'field.choice_radiobutton')->setChoices($choices)->renderExpanded(),
 
-            FormField::addFieldset('Numeric Fields'),
-            IntegerField::new('integer', 'Integer Field'),
-            NumberField::new('decimal', 'Number Field'),
-            PercentField::new('percent', 'Percent Field')->setColumns(2),
+            FormField::addFieldset('field_group.numeric'),
+            IntegerField::new('integer', 'field.integer'),
+            NumberField::new('decimal', 'field.number'),
+            PercentField::new('percent', 'field.percent')->setColumns(2),
             FormField::addRow(),
-            MoneyField::new('money', 'Money Field')->setCurrency('EUR')->setColumns(3),
+            MoneyField::new('money', 'field.money')->setCurrency('EUR')->setColumns(3),
 
-            FormField::addFieldset('Date and Time Fields'),
-            DateField::new('date', 'Date Field'),
-            TimeField::new('time', 'Time Field'),
-            DateTimeField::new('datetime', 'DateTime Field'),
-            TimezoneField::new('timezone', 'Timezone Field'),
+            FormField::addFieldset('field_group.datetime'),
+            DateField::new('date', 'field.date'),
+            TimeField::new('time', 'field.time'),
+            DateTimeField::new('datetime', 'field.datetime'),
+            TimezoneField::new('timezone', 'field.timezone'),
 
-            FormField::addFieldset('Internationalization Fields'),
-            CountryField::new('country', 'Country Field'),
-            CurrencyField::new('currency', 'Currency Field'),
-            LanguageField::new('language', 'Language Field'),
-            LocaleField::new('locale', 'Locale Field'),
+            FormField::addFieldset('field_group.i18n'),
+            CountryField::new('country', 'field.country'),
+            CurrencyField::new('currency', 'field.currency'),
+            LanguageField::new('language', 'field.language'),
+            LocaleField::new('locale', 'field.locale'),
 
-            FormField::addFieldset('Association & Collection Fields'),
-            ArrayField::new('array', 'Array Field'),
-            AssociationField::new('author', 'Association Field'),
-            CollectionField::new('collectionSimple', 'Collection Field (simple)')->setFormTypeOption('entry_type', CollectionSimpleType::class),
-            CollectionField::new('collectionComplex', 'Collection Field (complex)')->setFormTypeOption('entry_type', CollectionComplexType::class)->setEntryIsComplex(true),
+            FormField::addFieldset('field_group.association'),
+            ArrayField::new('array', 'field.array'),
+            AssociationField::new('author', 'field.association'),
+            CollectionField::new('collectionSimple', 'field.collection_simple')->setFormTypeOption('entry_type', CollectionSimpleType::class),
+            CollectionField::new('collectionComplex', 'field.collection_complex')->setFormTypeOption('entry_type', CollectionComplexType::class)->setEntryIsComplex(true),
 
-            FormField::addFieldset('Image Fields'),
-            ImageField::new('image', 'Image Field')->setUploadDir('/public/images/'),
+            FormField::addFieldset('field_group.image'),
+            ImageField::new('image', 'field.image')->setUploadDir('/public/images/'),
 
-            FormField::addFieldset('Other Fields'),
-            IdField::new('id', 'Id Field')->setColumns(2),
+            FormField::addFieldset('field_group.other'),
+            IdField::new('id', 'field.id')->setColumns(2),
             FormField::addRow(),
-            ColorField::new('color', 'Color Field'),
-            EmailField::new('email', 'Email Field'),
-            TelephoneField::new('telephone', 'Telephone Field'),
-            UrlField::new('url', 'Url Field'),
+            ColorField::new('color', 'field.color'),
+            EmailField::new('email', 'field.email'),
+            TelephoneField::new('telephone', 'field.telephone'),
+            UrlField::new('url', 'field.url'),
         ];
     }
 
