@@ -3,10 +3,7 @@
 {% block body_id 'dashboard' %}
 
 {% block main %}
-    <h1 class="page-title">Welcome to the EasyAdmin Demo project!</h1>
+    <h1 class="page-title">{{ 'admin.dashboard.page_title'|trans }}</h1>
 
-    <p class="description">
-        This is a demo project to show you how the EasyAdmin bundle works.
-        Use the sidebar links to navigate through the demo application.
-    </p>
+    <p class="description">{{ 'admin.dashboard.description'|trans }}</p>
 {% endblock %}

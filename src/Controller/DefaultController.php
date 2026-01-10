@@ -8,9 +8,15 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class DefaultController extends AbstractController
 {
-    #[Route('/', name: 'homepage')]
+    #[Route('/{_locale<%app.supported_locales%>}/', name: 'homepage')]
     public function index(): Response
     {
         return $this->redirectToRoute('admin');
+    }
+
+    #[Route('/')]
+    public function indexNoLocale(): Response
+    {
+        return $this->redirectToRoute('homepage', ['_locale' => 'en']);
     }
 }
