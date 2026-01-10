@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class FixturesController extends AbstractController
 {
-    #[Route('/{_locale<%app.supported_locales%>}/admin/regenerate-fixtures', name: 'admin_regenerate_fixtures', methods: ['GET', 'POST'])]
+    #[Route('/{_locale}/admin/regenerate-fixtures', name: 'admin_regenerate_fixtures', methods: ['GET', 'POST'])]
     public function regenerateFixtures(Request $request, KernelInterface $kernel): Response
     {
         if ('POST' === $request->getMethod()) {

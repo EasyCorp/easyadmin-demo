@@ -240,19 +240,6 @@
                             {% endblock main_menu_wrapper %}
                         {% endblock sidebar %}
 
-                        <li class="ea-locale-switcher nav-item dropdown">
-                            <a class="ea-locale-btn nav-link dropdown-toggle" href="#" id="dropdown-language" role="button"
-                               data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="icon fa-solid fa-earth-americas"></i>
-                                <span class="ea-locale-label">{{ app.request.locale|locale_name(app.request.locale)|u.title }}</span>
-                            </a>
-
-                            <ul class="dropdown-menu dropdown-menu-end ea-locale-menu" aria-labelledby="dropdown-language">
-                                <li><a class="dropdown-item" href="{{ path('homepage', {_locale: 'en'}) }}">English</a></li>
-                                <li><a class="dropdown-item" href="{{ path('homepage', {_locale: 'fr'}) }}">Français</a></li>
-                            </ul>
-                        </li>
-
                         <div id="sidebar-resizer-handler" class="resizer-handler resizer-handler-left"></div>
                     </aside>
                 </div>

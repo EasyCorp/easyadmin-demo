@@ -13,11 +13,17 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\Response;
 
-#[AdminDashboard(routePath: '/{_locale<%app.supported_locales%>}/admin', routeName: 'admin')]
+#[AdminDashboard(routePath: '/{_locale}/admin', routeName: 'admin')]
 class DashboardController extends AbstractDashboardController
 {
+    public function __construct(
+        #[Autowire('%kernel.enabled_locales%')] private array $enabledLocales,
+    ) {
+    }
+
     public function index(): Response
     {
         return $this->render('admin/dashboard.html.twig');
@@ -26,7 +32,8 @@ class DashboardController extends AbstractDashboardController
     public function configureDashboard(): Dashboard
     {
         return Dashboard::new()
-            ->setTitle('New Easyadmin Demo');
+            ->setTitle('Easyadmin Demo')
+            ->setLocales($this->enabledLocales);
     }
 
     public function configureAssets(): Assets

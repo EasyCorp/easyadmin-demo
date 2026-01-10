@@ -8,7 +8,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class DefaultController extends AbstractController
 {
-    #[Route('/{_locale<%app.supported_locales%>}/', name: 'homepage')]
+    #[Route('/{_locale}/', name: 'homepage')]
     public function index(): Response
     {
         return $this->redirectToRoute('admin');
