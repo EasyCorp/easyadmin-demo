@@ -4,6 +4,7 @@ return [
     'dashboard' => [
         'title' => '¡Bienvenido/a a la demo de EasyAdmin!',
         'description' => 'Esta aplicación de prueba muestra cómo funciona el bundle EasyAdmin. Usa los enlaces de la barra lateral para navegar por la aplicación.',
+        'locale_switcher' => 'Pincha aquí para visitar este sitio en <b>español</b>',
     ],
     'fixtures' => [
         'title' => 'Regenerar los datos de prueba de esta aplicación',

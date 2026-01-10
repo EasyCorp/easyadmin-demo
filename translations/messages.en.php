@@ -4,6 +4,7 @@ return [
     'dashboard' => [
         'title' => 'Welcome to the EasyAdmin Demo project!',
         'description' => 'This is a demo project to show you how the EasyAdmin bundle works. Use the sidebar links to navigate through the demo application.',
+        'locale_switcher' => 'Click here to browse this site in <b>English</b>',
     ],
     'fixtures' => [
         'title' => 'Regenerate the fixtures data used in this project',

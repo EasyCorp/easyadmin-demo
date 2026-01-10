@@ -6,4 +6,13 @@
     <h1 class="page-title">{{ 'dashboard.title'|trans }}</h1>
 
     <p class="description">{{ 'dashboard.description'|trans }}</p>
+
+    <div class="locale-switcher mt-4">
+        {% for locale in ea.dashboardLocales %}
+            <a href="{{ path('admin', {_locale: locale.locale}) }}" class="d-block mb-2 text-decoration-none">
+                <span class="badge badge-secondary me-2">{{ locale.locale|upper }}</span>
+                {{ 'dashboard.locale_switcher'|trans({}, 'messages', locale.locale)|raw }}
+            </a>
+        {% endfor %}
+    </div>
 {% endblock %}

@@ -4,6 +4,7 @@ return [
     'dashboard' => [
         'title' => 'Bienvenue dans le projet EasyAdmin Demo !',
         'description' => "Il s'agit d'un projet de démonstration visant à vous montrer comment fonctionne le bundle EasyAdmin. Utilisez les liens de la barre latérale pour naviguer dans l'application de démonstration.",
+        'locale_switcher' => 'Cliquez ici pour visiter ce site en <b>français</b>',
     ],
     'fixtures' => [
         'title' => "Régénérer les données relatives à l'installation utilisées dans ce projet",
