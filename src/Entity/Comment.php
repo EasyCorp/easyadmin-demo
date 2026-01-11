@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Enum\CommentStatus;
 use App\Repository\CommentRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -19,6 +20,9 @@ class Comment
 
     #[ORM\Column]
     private ?\DateTimeImmutable $publishedAt = null;
+
+    #[ORM\Column(length: 20, enumType: CommentStatus::class)]
+    private CommentStatus $status = CommentStatus::Pending;
 
     #[ORM\ManyToOne(inversedBy: 'comments')]
     #[ORM\JoinColumn(nullable: false)]
@@ -77,6 +81,54 @@ class Comment
     public function setPost(?Post $post): static
     {
         $this->post = $post;
+
+        return $this;
+    }
+
+    public function getStatus(): CommentStatus
+    {
+        return $this->status;
+    }
+
+    public function setStatus(CommentStatus $status): static
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    public function isApproved(): bool
+    {
+        return CommentStatus::Approved === $this->status;
+    }
+
+    public function isPending(): bool
+    {
+        return CommentStatus::Pending === $this->status;
+    }
+
+    public function isSpam(): bool
+    {
+        return CommentStatus::Spam === $this->status;
+    }
+
+    public function approve(): static
+    {
+        $this->status = CommentStatus::Approved;
+
+        return $this;
+    }
+
+    public function markAsSpam(): static
+    {
+        $this->status = CommentStatus::Spam;
+
+        return $this;
+    }
+
+    public function reject(): static
+    {
+        $this->status = CommentStatus::Rejected;
 
         return $this;
     }

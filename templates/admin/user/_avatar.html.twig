@@ -1,0 +1,12 @@
+{# Custom avatar template using Gravatar with identicon default #}
+{% set user = entity.instance %}
+
+{% if user.email %}
+    <img src="{{ gravatar_url(user.email, 40) }}"
+         class="rounded-circle"
+         width="40"
+         height="40"
+         alt="{{ entity.instance.fullName }}" />
+{% else %}
+    <span class="text-muted">-</span>
+{% endif %}

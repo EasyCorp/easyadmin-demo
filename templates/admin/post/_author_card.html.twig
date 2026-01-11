@@ -1,0 +1,18 @@
+{% set author = field.value %}
+
+{% if author %}
+<div class="author-card d-flex align-items-center gap-2">
+    <img src="{{ gravatar_url(author.email, 32) }}" class="rounded-circle" width="32" height="32" alt="{{ author.fullName }}" />
+
+    <div class="author-info">
+        <span class="author-name">{{ author.fullName }}</span>
+        {% if 'ROLE_ADMIN' in author.roles %}
+            <span class="badge badge-danger ms-1">Admin</span>
+        {% elseif 'ROLE_EDITOR' in author.roles %}
+            <span class="badge badge-warning ms-1">Editor</span>
+        {% endif %}
+    </div>
+</div>
+{% else %}
+<span class="text-muted">{{ 'common.not_assigned'|trans }}</span>
+{% endif %}
