@@ -1,0 +1,27 @@
+{# Comment preview with author avatar and truncated content #}
+{% set comment = entity.instance %}
+{% set author = comment.author %}
+{% set content = comment.content|striptags|u.truncate(100, '...') %}
+
+<div class="d-flex align-items-start gap-2">
+    {# Author avatar (Gravatar) #}
+    <img src="{{ gravatar_url(author.email, 32) }}"
+         alt="{{ author.fullName }}"
+         class="rounded-circle"
+         width="32"
+         height="32">
+
+    <div class="flex-grow-1">
+        {# Content preview #}
+        <div class="lh-base" style="max-width: 60ch; overflow-wrap: break-word;">
+            {{ content }}
+        </div>
+
+        {# Meta info #}
+        <div class="d-flex align-items-center gap-2 mt-1">
+            <a href="{{ path('admin_user_detail', {entityId: author.id}) }}"><small class="fw-medium">{{ author.fullName }}</small></a>
+            <small class="text-muted">•</small>
+            <small class="text-muted">{{ comment.publishedAt|date('M j, Y - H:i A') }}</small>
+        </div>
+    </div>
+</div>

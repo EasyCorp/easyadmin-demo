@@ -1,0 +1,15 @@
+{% set post = entity.instance %}
+
+<div class="post-title-cell d-flex align-items-center gap-2">
+    {% if post.isFeatured %}
+        <i class="fa fa-star text-warning" title="{{ 'post.isFeatured'|trans }}"></i>
+    {% endif %}
+
+    <a href="{{ path('admin_post_detail', {entityId: post.id}) }}">
+        {{ post.title }}
+    </a>
+</div>
+
+<small class="d-block text-muted" title="{{ 'post.word_count'|trans }}">
+    ({{ post.content|word_count|number_format }} {{ 'common.words'|trans }})
+</small>

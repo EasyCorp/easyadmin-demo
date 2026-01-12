@@ -1,0 +1,23 @@
+{# Posts count with popularity bar #}
+{% set tag = entity.instance %}
+{% set posts = tag.posts %}
+{% set count = posts|length %}
+{% set published = posts|filter(p => p.isPublished)|length %}
+{% set maxPosts = 20 %}
+{% set barWidth = min((count / maxPosts * 100)|round, 100) %}
+
+<div class="d-flex align-items-center gap-2">
+    <div class="progress" style="width: 120px; height: 6px;">
+        <div class="progress-bar bg-primary"
+             role="progressbar"
+             style="width: {{ barWidth }}%;"
+             aria-valuenow="{{ count }}"
+             aria-valuemin="0"
+             aria-valuemax="{{ maxPosts }}">
+        </div>
+    </div>
+    <span class="badge badge-secondary">{{ count }}</span>
+    {% if published != count %}
+        <small class="text-muted">({{ published }} {{ 'post.status.published'|trans|lower }})</small>
+    {% endif %}
+</div>

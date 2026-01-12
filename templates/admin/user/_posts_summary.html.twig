@@ -1,0 +1,21 @@
+{% set posts = field.value %}
+{% set published = posts|filter(p => p.isPublished)|length %}
+{% set drafts = posts|filter(p => p.isDraft)|length %}
+
+<div class="posts-summary d-flex align-items-center gap-3">
+    <span class="stat published d-flex align-items-center gap-1" title="{{ 'post.status.published'|trans }}">
+        <i class="fa fa-check-circle text-success"></i>
+        <span>{{ published }}</span>
+    </span>
+    <span class="stat drafts d-flex align-items-center gap-1" title="{{ 'post.status.draft'|trans }}">
+        <i class="fa fa-pencil text-secondary"></i>
+        <span>{{ drafts }}</span>
+    </span>
+    {% if posts|length > 0 %}
+        <a href="{{ path('admin_post_index', { 'filters': {
+            'author': { 'comparison': '=', 'value': entity.instance.id },
+        }}) }}" class="small">
+            {{ 'common.view_all'|trans }} &rarr;
+        </a>
+    {% endif %}
+</div>

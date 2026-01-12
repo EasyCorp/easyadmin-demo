@@ -17,7 +17,7 @@ class FormFieldReference
     public $author;
 
     public $text = 'Lorem ipsum dolor sit amet';
-    public $slug = null;
+    public $slug;
     public $textarea = <<<TEXT
         Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
         tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
@@ -47,7 +47,6 @@ class FormFieldReference
             }
         }
         PHP;
-
 
     public $boolean = false;
     public $autocomplete = [0];

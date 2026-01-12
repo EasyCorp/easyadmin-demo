@@ -1,0 +1,9 @@
+{% set posts = field.value %}
+{% set category = entity.instance %}
+
+<div class="category-stats d-flex align-items-center gap-2" style="border-left: 3px solid {{ category.color }}; padding-left: 8px;">
+    <strong>{{ posts|length }}</strong>
+    <span>{{ 'common.posts'|trans }}</span>
+    {% set published = posts|filter(p => p.isPublished)|length %}
+    <small class="text-muted">({{ 'category.published_count'|trans({count: published}) }})</small>
+</div>

@@ -3,46 +3,62 @@
 namespace App\Factory;
 
 use App\Entity\Tag;
-use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
+use Zenstruck\Foundry\Persistence\PersistentObjectFactory;
 
 /**
- * @extends PersistentProxyObjectFactory<Tag>
+ * @extends PersistentObjectFactory<Tag>
  */
-final class TagFactory extends PersistentProxyObjectFactory
+final class TagFactory extends PersistentObjectFactory
 {
     /**
-     * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#factories-as-services
-     *
-     * @todo inject services if required
+     * Cross-category tags that work well with diverse content.
      */
-    public function __construct()
-    {
-    }
+    private const TAGS = [
+        // Content type
+        'Tutorial',
+        'Guide',
+        'Tips',
+        'Review',
+        'Opinion',
+        'News',
+        'Interview',
+        // Audience level
+        'Beginner',
+        'Advanced',
+        // Attributes
+        'Trending',
+        'Budget',
+        'Premium',
+        'Quick Read',
+        'In-Depth',
+        'DIY',
+        'Research',
+    ];
+
+    private static int $index = 0;
 
     public static function class(): string
     {
         return Tag::class;
     }
 
-    /**
-     * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#model-factories
-     *
-     * @todo add your default values here
-     */
     protected function defaults(): array|callable
     {
+        $name = self::TAGS[self::$index % \count(self::TAGS)];
+        ++self::$index;
+
         return [
-            'name' => self::faker()->numerify('Tag ###'),
+            'name' => $name,
         ];
     }
 
-    /**
-     * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#initialization
-     */
     protected function initialize(): static
     {
-        return $this
-            // ->afterInstantiate(function(Tag $tag): void {})
-        ;
+        return $this;
+    }
+
+    public static function resetIndex(): void
+    {
+        self::$index = 0;
     }
 }

@@ -1,0 +1,40 @@
+{# Subscriber status with visual indicator #}
+{% set subscriber = entity.instance %}
+
+<div class="d-flex align-items-center gap-2">
+    {# Avatar (Gravatar) #}
+    <img src="{{ gravatar_url(subscriber.email, 32) }}"
+         alt="{{ subscriber.name ?? subscriber.email }}"
+         class="rounded-circle"
+         width="32"
+         height="32">
+
+    <div>
+        {# Name/Email #}
+        <div class="fw-medium">
+            {{ subscriber.name ?? subscriber.email }}
+        </div>
+
+        {# Status badges #}
+        <div class="d-flex gap-1 mt-1">
+            {% if subscriber.isConfirmed %}
+                <span class="badge badge-success">
+                    <i class="fa fa-check-circle"></i>
+                    {{ 'subscriber.status.confirmed'|trans|default('Confirmed') }}
+                </span>
+            {% else %}
+                <span class="badge badge-warning">
+                    <i class="fa fa-clock"></i>
+                    {{ 'subscriber.status.pending'|trans|default('Pending') }}
+                </span>
+            {% endif %}
+
+            {% if subscriber.unsubscribedAt %}
+                <span class="badge badge-secondary">
+                    <i class="fa fa-user-minus"></i>
+                    {{ 'subscriber.status.unsubscribed'|trans|default('Unsubscribed') }}
+                </span>
+            {% endif %}
+        </div>
+    </div>
+</div>

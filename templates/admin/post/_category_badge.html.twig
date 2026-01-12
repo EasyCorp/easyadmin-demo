@@ -1,0 +1,17 @@
+{# Category badge with color indicator #}
+{% set post = entity.instance %}
+{% set category = post.category %}
+
+{% if category %}
+    <span class="badge d-inline-flex align-items-center gap-1 shadow-none"
+          style="background-color: {{ category.color }}20; color: {{ category.color }}; border: 1px solid {{ category.color }}40;">
+        {% if category.icon %}
+            <i class="fa {{ category.icon }}"></i>
+        {% endif %}
+        {{ category.name }}
+    </span>
+{% else %}
+    <span class="badge badge-light text-muted">
+        {{ 'common.not_assigned'|trans }}
+    </span>
+{% endif %}

@@ -89,6 +89,8 @@ If translations changed:
 3. Method order: public, protected, private
 
 ### Code Practices
+- Don't add `declare(strict_types=1);` to PHP files
+- Use enums instead of constants for fixed sets of values
 - Avoid `else`/`elseif` after return/throw
 - Use `sprintf()` for exception messages with `get_debug_type()` for class names
 - Exception messages: capital letter start, period end, no backticks
@@ -100,6 +102,7 @@ If translations changed:
 - Error messages: concise but precise and actionable (e.g. include class names, file paths)
 - Handle exceptions explicitly (no silent catches)
 - Config files in PHP format (`translations/*.php`)
+- Use admin pretty URLs instead of generating them with `AdminUrlGenerator`
 
 ### PHPDoc
 - No `@return` for void methods
@@ -115,6 +118,7 @@ If translations changed:
 - Translation logic in templates, not PHP (use `TranslatableInterface`)
 - Use Twig components from EasyAdmin when possible (`<twig:ea:* />`)
 - Accessibility: `aria-*` attributes, semantic tags, labels
+- When adding links, use `path()` and admin pretty URLs instead of building them with `ea_url()`
 
 ## JavaScript
 

@@ -1,0 +1,57 @@
+{# @var ea \EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext #}
+{# @var field \EasyCorp\Bundle\EasyAdminBundle\Dto\FieldDto #}
+{# @var entity \EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto #}
+
+{% set series = entity.instance %}
+{% set posts = series.posts %}
+{% set totalPosts = posts|length %}
+{% set publishedPosts = posts|filter(p => p.isPublished)|length %}
+{% set percentage = totalPosts > 0 ? ((publishedPosts / totalPosts) * 100)|round : 0 %}
+{% set isComplete = series.isComplete %}
+
+{% set showPercentage = field.customOptions.get('showPercentage') %}
+{% set showCount = field.customOptions.get('showCount') %}
+{% set barHeight = field.customOptions.get('barHeight') %}
+{% set completeColor = field.customOptions.get('completeColor') %}
+{% set incompleteColor = field.customOptions.get('incompleteColor') %}
+
+<div class="series-progress-field">
+    {# Progress bar: green if 100%, blue with default gray background otherwise #}
+    <div class="progress" style="height: {{ barHeight }};">
+        <div class="progress-bar"
+             role="progressbar"
+             style="width: {{ percentage }}%; background-color: {{ percentage == 100 ? completeColor : incompleteColor }};"
+             aria-valuenow="{{ percentage }}"
+             aria-valuemin="0"
+             aria-valuemax="100">
+        </div>
+    </div>
+
+    {# Stats #}
+    <div class="d-flex justify-content-between align-items-center mt-1">
+        {% if showCount %}
+            <small class="text-muted">
+                <span class="badge badge-success">{{ publishedPosts }}</span>
+                /
+                <span class="badge badge-secondary">{{ totalPosts }}</span>
+                {{ 'common.posts'|trans }}
+            </small>
+        {% endif %}
+
+        {% if showPercentage %}
+            <small class="{% if percentage == 100 %}text-success fw-bold{% else %}text-muted{% endif %}">
+                {{ percentage }}%
+            </small>
+        {% endif %}
+    </div>
+
+    {# Complete badge #}
+    {% if isComplete %}
+        <div class="mt-1">
+            <span class="badge badge-info">
+                <i class="fa fa-check-circle"></i>
+                {{ 'series.complete'|trans }}
+            </span>
+        </div>
+    {% endif %}
+</div>
