@@ -7,7 +7,7 @@ main features of EasyAdmin, a popular admin generator for [Symfony][2] applicati
 Requirements
 ------------
 
-  * PHP 8.2 or higher;
+  * PHP 8.4 or higher;
   * PDO-SQLite PHP extension enabled;
   * and the [usual Symfony application requirements][2].
 
