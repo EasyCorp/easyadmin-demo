@@ -6,6 +6,7 @@ use App\Admin\Filter\AuthorWithMinPostsFilter;
 use App\Entity\Post;
 use App\Enum\PostStatus;
 use Doctrine\ORM\EntityManagerInterface;
+use EasyCorp\Bundle\EasyAdminBundle\Attribute\AdminRoute;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\ActionGroup;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
@@ -283,6 +284,7 @@ class PostCrudController extends AbstractCrudController
             ->add(Crud::PAGE_INDEX, $batchFeatured);
     }
 
+    #[AdminRoute(path: '{entityId}/publish', name: 'publish')]
     public function publishPost(AdminContext $context): Response
     {
         /** @var Post $post */
@@ -296,6 +298,7 @@ class PostCrudController extends AbstractCrudController
         return $this->redirectToRoute('admin_post_index');
     }
 
+    #[AdminRoute(path: '{entityId}/unpublish', name: 'unpublish')]
     public function unpublishPost(AdminContext $context): Response
     {
         /** @var Post $post */
@@ -308,6 +311,7 @@ class PostCrudController extends AbstractCrudController
         return $this->redirectToRoute('admin_post_index');
     }
 
+    #[AdminRoute(path: '{entityId}/archive', name: 'archive')]
     public function archivePost(AdminContext $context): Response
     {
         /** @var Post $post */
@@ -320,6 +324,7 @@ class PostCrudController extends AbstractCrudController
         return $this->redirectToRoute('admin_post_index');
     }
 
+    #[AdminRoute(path: 'batch-publish', name: 'batch_publish', options: ['methods' => ['POST']])]
     public function batchPublish(BatchActionDto $batchActionDto): Response
     {
         $count = $this->processBatchAction(
@@ -336,6 +341,7 @@ class PostCrudController extends AbstractCrudController
         return $this->redirect($batchActionDto->getReferrerUrl());
     }
 
+    #[AdminRoute(path: 'batch-archive', name: 'batch_archive', options: ['methods' => ['POST']])]
     public function batchArchive(BatchActionDto $batchActionDto): Response
     {
         $count = $this->processBatchAction(
@@ -349,6 +355,7 @@ class PostCrudController extends AbstractCrudController
         return $this->redirect($batchActionDto->getReferrerUrl());
     }
 
+    #[AdminRoute(path: 'batch-featured', name: 'batch_featured', options: ['methods' => ['POST']])]
     public function batchMarkAsFeatured(BatchActionDto $batchActionDto): Response
     {
         $count = $this->processBatchAction(

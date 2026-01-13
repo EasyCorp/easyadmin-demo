@@ -75,7 +75,7 @@ If translations changed:
 - Variables/methods: `camelCase`
 - Config/routes/Twig: `snake_case`
 - Constants: `SCREAMING_SNAKE_CASE`
-- Classes: `UpperCamelCase`
+- Classes and enum cases: `UpperCamelCase`
 - Abstract classes: `Abstract*` (except test cases)
 - Interfaces: `*Interface`, Traits: `*Trait`, Exceptions: `*Exception`
 - Most classes add a suffix showing its type:

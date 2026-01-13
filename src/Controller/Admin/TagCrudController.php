@@ -71,7 +71,7 @@ class TagCrudController extends AbstractCrudController
         $viewPosts = Action::new('viewPosts', 'action.view_posts', 'fa fa-newspaper')
             ->linkToUrl(fn (Tag $tag): string => $this->urlGenerator->generate('admin_post_index', [
                 'filters[tags][value]' => $tag->getId(),
-                'filters[tags][comparison]' => 'eq',
+                'filters[tags][comparison]' => '=',
             ]));
 
         return $actions
