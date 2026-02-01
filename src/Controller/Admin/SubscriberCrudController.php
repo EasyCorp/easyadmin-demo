@@ -14,15 +14,21 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\BatchActionDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\CountryField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\LocaleField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TimezoneField;
 use EasyCorp\Bundle\EasyAdminBundle\Filter\BooleanFilter;
 use EasyCorp\Bundle\EasyAdminBundle\Filter\ChoiceFilter;
+use EasyCorp\Bundle\EasyAdminBundle\Filter\CountryFilter;
 use EasyCorp\Bundle\EasyAdminBundle\Filter\DateTimeFilter;
+use EasyCorp\Bundle\EasyAdminBundle\Filter\LocaleFilter;
 use EasyCorp\Bundle\EasyAdminBundle\Filter\TextFilter;
+use EasyCorp\Bundle\EasyAdminBundle\Filter\TimezoneFilter;
 use Symfony\Component\HttpFoundation\Response;
 
 class SubscriberCrudController extends AbstractCrudController
@@ -71,15 +77,18 @@ class SubscriberCrudController extends AbstractCrudController
         yield ChoiceField::new('source')
             ->setLabel('subscriber.source')
             ->setChoices(SubscriberSource::choices())
-            ->renderAsBadges(SubscriberSource::badges());
+            ->renderAsBadges(SubscriberSource::badges())
+            ->setPreferredChoices([SubscriberSource::Homepage]);
 
-        yield ChoiceField::new('locale')
+        yield LocaleField::new('locale')
             ->setLabel('subscriber.locale')
-            ->setChoices([
-                'English' => 'en',
-                'Spanish' => 'es',
-            ])
             ->onlyOnForms();
+
+        yield CountryField::new('country')
+            ->setLabel('subscriber.country');
+
+        yield TimezoneField::new('timezone')
+            ->setLabel('subscriber.timezone');
 
         yield DateTimeField::new('subscribedAt')
             ->setLabel('subscriber.subscribedAt')
@@ -109,10 +118,9 @@ class SubscriberCrudController extends AbstractCrudController
             ->add(TextFilter::new('email', 'subscriber.email'))
             ->add(BooleanFilter::new('isConfirmed', 'subscriber.isConfirmed'))
             ->add(ChoiceFilter::new('source', 'subscriber.source')->setTranslatableChoices(SubscriberSource::filterChoices()))
-            ->add(ChoiceFilter::new('locale', 'subscriber.locale')->setChoices([
-                'English' => 'en',
-                'Spanish' => 'es',
-            ]))
+            ->add(LocaleFilter::new('locale', 'subscriber.locale'))
+            ->add(CountryFilter::new('country', 'subscriber.country'))
+            ->add(TimezoneFilter::new('timezone', 'subscriber.timezone')->preferredChoices(['Europe/Madrid', 'Asia/Tokyo', 'America/New_York']))
             ->add(DateTimeFilter::new('subscribedAt', 'subscriber.subscribedAt'));
     }
 
@@ -127,7 +135,8 @@ class SubscriberCrudController extends AbstractCrudController
         $unsubscribeAction = Action::new('unsubscribe', 'action.unsubscribe', 'fa fa-user-minus')
             ->linkToCrudAction('unsubscribeSubscriber')
             ->displayIf(static fn (Subscriber $subscriber): bool => $subscriber->isActive())
-            ->asWarningAction();
+            ->asWarningAction()
+            ->askConfirmation('subscriber.confirm.unsubscribe');
 
         // Batch actions
         $batchConfirm = Action::new('batchConfirm', 'batch.confirm_selected', 'fa fa-check-circle')
@@ -138,7 +147,8 @@ class SubscriberCrudController extends AbstractCrudController
         $batchUnsubscribe = Action::new('batchUnsubscribe', 'batch.unsubscribe_selected', 'fa fa-user-minus')
             ->linkToCrudAction('batchUnsubscribe')
             ->asWarningAction()
-            ->createAsBatchAction();
+            ->createAsBatchAction()
+            ->askConfirmation('subscriber.confirm.batch_unsubscribe');
 
         return $actions
             // Row actions

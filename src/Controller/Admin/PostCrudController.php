@@ -3,7 +3,9 @@
 namespace App\Controller\Admin;
 
 use App\Admin\Filter\AuthorWithMinPostsFilter;
+use App\Entity\Category;
 use App\Entity\Post;
+use App\Entity\Tag;
 use App\Enum\PostStatus;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Attribute\AdminRoute;
@@ -52,155 +54,100 @@ class PostCrudController extends AbstractCrudController
             ->setEntityLabelInSingular('post.label')
             ->setEntityLabelInPlural('post.label_plural')
             ->setDefaultSort(['publishedAt' => 'DESC'])
-            ->setSearchFields(['title', 'summary', 'content', 'author.fullName']);
+            ->setSearchFields(['title', 'summary', 'content', 'author.fullName'])
+            ->setDefaultRowAction(Action::EDIT);
     }
 
     public function configureFields(string $pageName): iterable
     {
-        // === INDEX PAGE ===
-        yield IdField::new('id')
-            ->onlyOnIndex();
-
-        yield TextField::new('title')
-            ->setLabel('post.title')
-            ->setTemplatePath('admin/post/_title_with_metadata.html.twig')
-            ->onlyOnIndex();
-
-        yield ChoiceField::new('status')
-            ->setLabel('post.status')
-            ->setChoices(PostStatus::choices())
-            ->renderAsBadges(PostStatus::badges())
-            ->onlyOnIndex();
-
-        yield AssociationField::new('author')
-            ->setLabel('post.author')
-            ->setTemplatePath('admin/post/_author_card.html.twig')
-            ->onlyOnIndex();
-
-        yield AssociationField::new('category')
-            ->setLabel('post.category')
-            ->setTemplatePath('admin/post/_category_badge.html.twig')
-            ->onlyOnIndex();
-
-        yield BooleanField::new('isFeatured')
-            ->setLabel('post.isFeatured')
-            ->renderAsSwitch(false)
-            ->hideValueWhenFalse()
-            ->onlyOnIndex();
-
-        yield DateTimeField::new('publishedAt')
-            ->setLabel('post.publishedAt')
-            ->onlyOnIndex();
-
-        // === DETAIL & FORM PAGES (two-column layout) ===
+        if ('Crud::PAGE_INDEX' === $pageName) {
+            return [
+                IdField::new('id'),
+                TextField::new('title', 'post.title')
+                    ->setTemplatePath('admin/post/_title_with_metadata.html.twig'),
+                ChoiceField::new('status', 'post.status')
+                    ->setChoices(PostStatus::choices())->renderAsBadges(PostStatus::badges()),
+                AssociationField::new('author', 'post.author')
+                    ->setTemplatePath('admin/post/_author_card.html.twig'),
+                AssociationField::new('category', 'post.category')
+                    ->setTemplatePath('admin/post/_category_badge.html.twig'),
+                BooleanField::new('isFeatured', 'post.isFeatured')
+                    ->renderAsSwitch(false)
+                    ->hideValueWhenFalse(),
+            ];
+        }
 
         // Main column (content)
-        yield FormField::addColumn('col-lg-8')
-            ->hideOnIndex();
+        yield FormField::addColumn('col-lg-8');
 
-        yield FormField::addFieldset('post.fieldset.content', 'fa fa-pen')
-            ->hideOnIndex();
+        yield FormField::addFieldset('post.fieldset.content', 'fa fa-pen');
 
-        yield TextField::new('title')
-            ->setLabel('post.title')
-            ->hideOnIndex();
+        yield TextField::new('title', 'post.title');
 
-        yield SlugField::new('slug')
-            ->setLabel('post.slug')
-            ->setTargetFieldName('title')
-            ->hideOnIndex();
+        yield SlugField::new('slug', 'post.slug')
+            ->setTargetFieldName('title');
 
-        yield ImageField::new('featuredImage')
-            ->setLabel('post.featuredImage')
+        yield ImageField::new('featuredImage', 'post.featuredImage')
             ->setUploadDir('public/uploads/posts')
             ->setBasePath('uploads/posts')
-            ->setUploadedFileNamePattern('[year]/[month]/[slug]-[contenthash].[extension]')
-            ->hideOnIndex();
+            ->setUploadedFileNamePattern('[year]/[month]/[slug]-[contenthash].[extension]');
 
-        yield TextEditorField::new('content')
-            ->setLabel('post.content')
+        yield TextEditorField::new('content', 'post.content')
             ->setNumOfRows(20)
             ->onlyOnForms();
 
-        yield TextField::new('content')
-            ->setLabel('post.content')
+        yield TextField::new('content', 'post.content')
             ->onlyOnDetail()
             ->renderAsHtml();
 
-        yield TextareaField::new('summary')
-            ->setLabel('post.summary')
-            ->setNumOfRows(3)
-            ->hideOnIndex();
+        yield TextareaField::new('summary', 'post.summary')
+            ->setNumOfRows(3);
 
         // Sidebar column (metadata)
-        yield FormField::addColumn('col-lg-4')
-            ->hideOnIndex();
+        yield FormField::addColumn('col-lg-4');
 
-        // Status fieldset
-        yield FormField::addFieldset('post.fieldset.status', 'fa fa-flag')
-            ->hideOnIndex();
+        yield FormField::addFieldset('post.fieldset.status', 'fa fa-flag');
 
-        yield ChoiceField::new('status')
-            ->setLabel('post.status')
+        yield ChoiceField::new('status', 'post.status')
             ->setChoices(PostStatus::choices())
             ->renderAsBadges(PostStatus::badges())
-            ->hideOnIndex();
+            ->setPreferredChoices([PostStatus::Published]);
 
-        yield BooleanField::new('isFeatured')
-            ->setLabel('post.isFeatured')
-            ->renderAsSwitch(true)
-            ->hideOnIndex();
+        yield BooleanField::new('isFeatured', 'post.isFeatured')
+            ->renderAsSwitch(true);
 
-        yield DateTimeField::new('publishedAt')
-            ->setLabel('post.publishedAt')
-            ->hideOnIndex();
+        yield DateTimeField::new('publishedAt', 'post.publishedAt');
 
-        yield DateTimeField::new('scheduledAt')
-            ->setLabel('post.scheduledAt')
-            ->setHelp('post.scheduledAt_help')
-            ->hideOnIndex();
+        yield DateTimeField::new('scheduledAt', 'post.scheduledAt')
+            ->setHelp('post.scheduledAt_help');
 
         // Classification fieldset
-        yield FormField::addFieldset('post.fieldset.classification', 'fa fa-folder-tree')
-            ->hideOnIndex();
+        yield FormField::addFieldset('post.fieldset.classification', 'fa fa-folder-tree');
 
-        yield AssociationField::new('author')
-            ->setLabel('post.author')
+        yield AssociationField::new('author', 'post.author')
             ->setSortProperty('fullName')
-            ->autocomplete()
-            ->hideOnIndex();
+            ->autocomplete(template: 'admin/post/_author_autocomplete.html.twig', renderAsHtml: true);
 
-        yield AssociationField::new('category')
-            ->setLabel('post.category')
+        yield AssociationField::new('category', 'post.category')
             ->setSortProperty('name')
-            ->hideOnIndex();
+            ->autocomplete(callback: static fn (Category $c): string => sprintf('%s %s', $c->getIcon(), $c->getName()));
 
-        yield AssociationField::new('tags')
-            ->setLabel('post.tags')
-            ->autocomplete()
-            ->setFormTypeOption('by_reference', false)
-            ->hideOnIndex();
+        yield AssociationField::new('tags', 'post.tags')
+            ->autocomplete(callback: static fn (Tag $tag): string => $tag->getName())
+            ->setFormTypeOption('by_reference', false);
 
-        // Series fieldset
-        yield FormField::addFieldset('post.fieldset.series', 'fa fa-layer-group')
-            ->hideOnIndex()
-            ->collapsible();
+        yield FormField::addFieldset('post.fieldset.series', 'fa fa-layer-group')->collapsible();
 
-        yield AssociationField::new('series')
-            ->setLabel('post.series')
-            ->hideOnIndex();
+        yield AssociationField::new('series', 'post.series');
 
-        yield IntegerField::new('seriesPosition')
-            ->setLabel('post.seriesPosition')
-            ->setHelp('post.seriesPosition_help')
-            ->hideOnIndex();
+        yield IntegerField::new('seriesPosition', 'post.seriesPosition')
+            ->setHelp('post.seriesPosition_help');
 
         // Statistics fieldset (detail only)
         yield FormField::addFieldset('post.fieldset.statistics', 'fa fa-chart-line')
             ->onlyOnDetail();
 
-        yield IntegerField::new('viewCount')
-            ->setLabel('post.viewCount')
+        yield IntegerField::new('viewCount', 'post.viewCount')
             ->setThousandsSeparator(',')
             ->onlyOnDetail();
     }
@@ -238,7 +185,8 @@ class PostCrudController extends AbstractCrudController
         $archiveAction = Action::new('archive', 'action.archive', 'fa fa-archive')
             ->linkToCrudAction('archivePost')
             ->displayIf(static fn (Post $post): bool => !$post->isArchived())
-            ->asWarningAction();
+            ->asWarningAction()
+            ->askConfirmation('post.confirm.archive');
 
         // Action Group for status changes (detail page) - with split button
         $statusActionGroup = ActionGroup::new('statusGroup', 'action.change_status', 'fa fa-flag')
@@ -247,7 +195,7 @@ class PostCrudController extends AbstractCrudController
             ->addAction($unpublishAction);
 
         $viewOnSiteAction = Action::new('viewOnSite', 'action.view_on_site', 'fa fa-external-link')
-            ->linkToUrl(fn (Post $post): string => '/blog/'.$post->getSlug())
+            ->linkToUrl(static fn (Post $post): string => '/blog/'.$post->getSlug())
             ->setHtmlAttributes(['target' => '_blank'])
             ->displayIf(static fn (Post $post): bool => $post->isPublished());
 
@@ -260,7 +208,8 @@ class PostCrudController extends AbstractCrudController
         $batchArchive = Action::new('batchArchive', 'batch.archive_selected', 'fa fa-archive')
             ->linkToCrudAction('batchArchive')
             ->asDefaultAction()
-            ->createAsBatchAction();
+            ->createAsBatchAction()
+            ->askConfirmation('post.confirm.batch_archive');
 
         $batchFeatured = Action::new('batchFeatured', 'batch.mark_featured', 'fa fa-star')
             ->linkToCrudAction('batchMarkAsFeatured')

@@ -33,7 +33,8 @@ class TagCrudController extends AbstractCrudController
             ->setEntityLabelInPlural('tag.label_plural')
             ->setDefaultSort(['name' => 'ASC'])
             ->setSearchFields(['name'])
-            ->showEntityActionsInlined();
+            ->showEntityActionsInlined()
+            ->setDefaultRowAction('viewPosts');
     }
 
     public function configureFields(string $pageName): iterable

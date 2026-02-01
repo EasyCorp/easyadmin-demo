@@ -41,7 +41,8 @@ class CommentCrudController extends AbstractCrudController
             ->setEntityLabelInSingular('comment.label')
             ->setEntityLabelInPlural('comment.label_plural')
             ->setDefaultSort(['publishedAt' => 'DESC'])
-            ->setSearchFields(['content', 'author.fullName', 'post.title']);
+            ->setSearchFields(['content', 'author.fullName', 'post.title'])
+            ->setDefaultRowAction(Action::DETAIL);
     }
 
     public function configureFields(string $pageName): iterable
@@ -71,7 +72,8 @@ class CommentCrudController extends AbstractCrudController
         yield ChoiceField::new('status')
             ->setLabel('comment.status')
             ->setChoices(CommentStatus::choices())
-            ->renderAsBadges(CommentStatus::badges());
+            ->renderAsBadges(CommentStatus::badges())
+            ->setPreferredChoices([CommentStatus::Approved]);
 
         yield DateTimeField::new('publishedAt')
             ->setLabel('comment.publishedAt')
@@ -112,7 +114,8 @@ class CommentCrudController extends AbstractCrudController
         $markSpamAction = Action::new('markSpam', 'action.mark_spam', 'fa fa-ban')
             ->linkToCrudAction('markCommentAsSpam')
             ->displayIf(static fn (Comment $comment): bool => !$comment->isSpam())
-            ->asDangerAction();
+            ->asDangerAction()
+            ->askConfirmation('comment.confirm.mark_spam');
 
         // Batch actions
         $batchApprove = Action::new('batchApprove', 'batch.approve_selected', 'fa fa-check')
@@ -128,7 +131,8 @@ class CommentCrudController extends AbstractCrudController
         $batchSpam = Action::new('batchSpam', 'batch.mark_as_spam', 'fa fa-ban')
             ->linkToCrudAction('batchMarkAsSpam')
             ->asDangerAction()
-            ->createAsBatchAction();
+            ->createAsBatchAction()
+            ->askConfirmation('comment.confirm.batch_spam');
 
         return $actions
             // Row actions

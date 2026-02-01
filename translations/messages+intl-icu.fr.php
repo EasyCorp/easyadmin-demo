@@ -104,6 +104,10 @@ return [
             'unpublished' => 'Article dépublié avec succès.',
             'archived' => 'Article archivé avec succès.',
         ],
+        'confirm' => [
+            'archive' => 'Êtes-vous sûr de vouloir archiver cet article ?',
+            'batch_archive' => 'Êtes-vous sûr de vouloir archiver les articles sélectionnés ?',
+        ],
     ],
 
     // Tag fields
@@ -165,6 +169,10 @@ return [
             'rejected' => 'Commentaire rejeté avec succès.',
             'marked_spam' => 'Commentaire marqué comme spam.',
         ],
+        'confirm' => [
+            'mark_spam' => 'Êtes-vous sûr de vouloir marquer ce commentaire comme spam ?',
+            'batch_spam' => 'Êtes-vous sûr de vouloir marquer les commentaires sélectionnés comme spam ?',
+        ],
     ],
 
     // Filters
@@ -194,6 +202,8 @@ return [
         'source.popup' => 'Popup',
         'source.import' => 'Import',
         'locale' => 'Langue',
+        'country' => 'Pays',
+        'timezone' => 'Fuseau horaire',
         'subscribedAt' => 'Inscrit le',
         'confirmedAt' => 'Confirmé le',
         'unsubscribedAt' => 'Désinscrit le',
@@ -207,6 +217,10 @@ return [
         'flash' => [
             'confirmed' => 'Abonné confirmé avec succès.',
             'unsubscribed' => 'Abonné désinscrit avec succès.',
+        ],
+        'confirm' => [
+            'unsubscribe' => 'Êtes-vous sûr de vouloir désinscrire cet utilisateur ?',
+            'batch_unsubscribe' => 'Êtes-vous sûr de vouloir désinscrire les abonnés sélectionnés ?',
         ],
     ],
 

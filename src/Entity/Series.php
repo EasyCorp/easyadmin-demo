@@ -180,7 +180,7 @@ class Series
      */
     public function getPublishedPostsCount(): int
     {
-        return $this->posts->filter(fn (Post $post): bool => $post->isPublished())->count();
+        return $this->posts->filter(static fn (Post $post): bool => $post->isPublished())->count();
     }
 
     /**

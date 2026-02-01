@@ -30,7 +30,8 @@ class CategoryCrudController extends AbstractCrudController
             ->setEntityLabelInSingular('category.label')
             ->setEntityLabelInPlural('category.label_plural')
             ->setDefaultSort(['position' => 'ASC'])
-            ->setSearchFields(['name', 'description']);
+            ->setSearchFields(['name', 'description'])
+            ->setDefaultRowAction(Action::DETAIL);
     }
 
     public function configureFields(string $pageName): iterable

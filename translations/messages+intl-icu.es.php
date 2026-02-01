@@ -125,6 +125,10 @@ return [
             'rejected' => 'Comentario rechazado correctamente.',
             'marked_spam' => 'Comentario marcado como spam.',
         ],
+        'confirm' => [
+            'mark_spam' => '¿Estás seguro de que quieres marcar este comentario como spam?',
+            'batch_spam' => '¿Estás seguro de que quieres marcar los comentarios seleccionados como spam?',
+        ],
     ],
 
     // Actions
@@ -183,6 +187,8 @@ return [
         'source.popup' => 'Popup',
         'source.import' => 'Importación',
         'locale' => 'Idioma',
+        'country' => 'País',
+        'timezone' => 'Zona horaria',
         'subscribedAt' => 'Fecha de suscripción',
         'confirmedAt' => 'Fecha de confirmación',
         'unsubscribedAt' => 'Fecha de baja',
@@ -196,6 +202,10 @@ return [
         'flash' => [
             'confirmed' => 'Suscriptor confirmado correctamente.',
             'unsubscribed' => 'Suscriptor dado de baja correctamente.',
+        ],
+        'confirm' => [
+            'unsubscribe' => '¿Estás seguro de que quieres dar de baja a este usuario?',
+            'batch_unsubscribe' => '¿Estás seguro de que quieres dar de baja a los suscriptores seleccionados?',
         ],
     ],
 
@@ -236,6 +246,10 @@ return [
             'published' => 'Artículo publicado correctamente.',
             'unpublished' => 'Artículo despublicado correctamente.',
             'archived' => 'Artículo archivado correctamente.',
+        ],
+        'confirm' => [
+            'archive' => '¿Estás seguro de que quieres archivar este artículo?',
+            'batch_archive' => '¿Estás seguro de que quieres archivar los artículos seleccionados?',
         ],
     ],
 

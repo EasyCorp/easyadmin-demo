@@ -104,6 +104,10 @@ return [
             'unpublished' => 'Post unpublished successfully.',
             'archived' => 'Post archived successfully.',
         ],
+        'confirm' => [
+            'archive' => 'Are you sure you want to archive this post?',
+            'batch_archive' => 'Are you sure you want to archive the selected posts?',
+        ],
     ],
 
     // Tag fields
@@ -165,6 +169,10 @@ return [
             'rejected' => 'Comment rejected successfully.',
             'marked_spam' => 'Comment marked as spam.',
         ],
+        'confirm' => [
+            'mark_spam' => 'Are you sure you want to mark this comment as spam?',
+            'batch_spam' => 'Are you sure you want to mark the selected comments as spam?',
+        ],
     ],
 
     // Filters
@@ -194,6 +202,8 @@ return [
         'source.popup' => 'Popup',
         'source.import' => 'Import',
         'locale' => 'Locale',
+        'country' => 'Country',
+        'timezone' => 'Timezone',
         'subscribedAt' => 'Subscribed At',
         'confirmedAt' => 'Confirmed At',
         'unsubscribedAt' => 'Unsubscribed At',
@@ -207,6 +217,10 @@ return [
         'flash' => [
             'confirmed' => 'Subscriber confirmed successfully.',
             'unsubscribed' => 'Subscriber unsubscribed successfully.',
+        ],
+        'confirm' => [
+            'unsubscribe' => 'Are you sure you want to unsubscribe this user?',
+            'batch_unsubscribe' => 'Are you sure you want to unsubscribe the selected subscribers?',
         ],
     ],
 

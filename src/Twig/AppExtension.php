@@ -10,9 +10,11 @@ final class AppExtension
     #[AsTwigFunction('gravatar_url')]
     public function gravatarUrl(?string $email, int $size = 80): string
     {
-        $hash = md5(strtolower(trim($email ?? '')));
-
-        return sprintf('https://www.gravatar.com/avatar/%s?s=%d&d=identicon', $hash, $size);
+        return sprintf(
+            'https://www.gravatar.com/avatar/%s?s=%d&d=identicon',
+            md5(strtolower(trim($email ?? ''))),
+            $size
+        );
     }
 
     #[AsTwigFilter('word_count')]

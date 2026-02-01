@@ -32,7 +32,7 @@ enum SubscriberSource: string
     public static function choices(): array
     {
         return array_combine(
-            array_map(fn (self $case) => $case->label(), self::cases()),
+            array_map(static fn (self $case) => $case->label(), self::cases()),
             self::cases()
         );
     }
@@ -50,8 +50,8 @@ enum SubscriberSource: string
     public static function filterChoices(): array
     {
         return array_combine(
-            array_map(fn (self $case) => $case->label(), self::cases()),
-            array_map(fn (self $case) => $case->value, self::cases())
+            array_map(static fn (self $case) => $case->label(), self::cases()),
+            array_map(static fn (self $case) => $case->value, self::cases())
         );
     }
 }

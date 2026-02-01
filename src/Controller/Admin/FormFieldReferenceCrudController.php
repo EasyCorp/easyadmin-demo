@@ -122,7 +122,7 @@ class FormFieldReferenceCrudController extends AbstractCrudController
         ];
     }
 
-    public function createEntity(string $entityFqcn)
+    public function createEntity(string $entityFqcn): object
     {
         $janeDoe = $this->entityManager->getRepository(User::class)->findOneBy(['username' => 'jane_admin']);
         $johnDoe = $this->entityManager->getRepository(User::class)->findOneBy(['username' => 'john_user']);

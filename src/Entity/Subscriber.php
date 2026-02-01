@@ -45,6 +45,12 @@ class Subscriber
     #[ORM\Column(length: 45, nullable: true)]
     private ?string $ipAddress = null;
 
+    #[ORM\Column(length: 2, nullable: true)]
+    private ?string $country = null;
+
+    #[ORM\Column(length: 50, nullable: true)]
+    private ?string $timezone = null;
+
     public function __construct()
     {
         $this->subscribedAt = new \DateTimeImmutable();
@@ -196,6 +202,30 @@ class Subscriber
     public function unsubscribe(): static
     {
         $this->unsubscribedAt = new \DateTimeImmutable();
+
+        return $this;
+    }
+
+    public function getCountry(): ?string
+    {
+        return $this->country;
+    }
+
+    public function setCountry(?string $country): static
+    {
+        $this->country = $country;
+
+        return $this;
+    }
+
+    public function getTimezone(): ?string
+    {
+        return $this->timezone;
+    }
+
+    public function setTimezone(?string $timezone): static
+    {
+        $this->timezone = $timezone;
 
         return $this;
     }

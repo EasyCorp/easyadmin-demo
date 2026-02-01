@@ -73,10 +73,9 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::section('menu.content');
 
         $draftCount = $this->postRepository->count(['status' => PostStatus::Draft]);
-        $scheduledCount = $this->postRepository->count(['status' => PostStatus::Scheduled]);
         $postsMenuItem = MenuItem::linkToCrud('entity.blog_posts', 'fa fa-file-text-o', Post::class);
-        if ($draftCount > 0 || $scheduledCount > 0) {
-            $postsMenuItem->setBadge($draftCount.' / '.$scheduledCount, 'secondary');
+        if ($draftCount > 0) {
+            $postsMenuItem->setBadge($draftCount);
         }
         yield $postsMenuItem;
 
