@@ -2,14 +2,7 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\Category;
 use App\Entity\Comment;
-use App\Entity\FormFieldReference;
-use App\Entity\Post;
-use App\Entity\Series;
-use App\Entity\Subscriber;
-use App\Entity\Tag;
-use App\Entity\User;
 use App\Enum\CommentStatus;
 use App\Enum\PostStatus;
 use App\Repository\CommentRepository;
@@ -73,28 +66,28 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::section('menu.content');
 
         $draftCount = $this->postRepository->count(['status' => PostStatus::Draft]);
-        $postsMenuItem = MenuItem::linkToCrud('entity.blog_posts', 'fa fa-file-text-o', Post::class);
+        $postsMenuItem = MenuItem::linkTo(PostCrudController::class, 'entity.blog_posts', 'fa fa-file-text-o', );
         if ($draftCount > 0) {
             $postsMenuItem->setBadge($draftCount);
         }
         yield $postsMenuItem;
 
-        yield MenuItem::linkToCrud('entity.categories', 'fa fa-folder', Category::class);
-        yield MenuItem::linkToCrud('entity.tags', 'fas fa-tags', Tag::class);
-        yield MenuItem::linkToCrud('entity.series', 'fa fa-list-ol', Series::class);
+        yield MenuItem::linkTo(CategoryCrudController::class, 'entity.categories', 'fa fa-folder');
+        yield MenuItem::linkTo(TagCrudController::class, 'entity.tags', 'fas fa-tags');
+        yield MenuItem::linkTo(SeriesCrudController::class, 'entity.series', 'fa fa-list-ol');
 
         // Community section
         yield MenuItem::section('menu.community');
 
         $pendingCommentsCount = $this->commentRepository->count(['status' => CommentStatus::Pending]);
-        $commentsMenuItem = MenuItem::linkToCrud('entity.comments', 'far fa-comments', Comment::class);
+        $commentsMenuItem = MenuItem::linkTo(CommentCrudController::class, 'entity.comments', 'far fa-comments');
         if ($pendingCommentsCount > 0) {
             $commentsMenuItem->setBadge($pendingCommentsCount, 'danger');
         }
         yield $commentsMenuItem;
 
         $unconfirmedCount = $this->subscriberRepository->count(['isConfirmed' => false]);
-        $subscribersMenuItem = MenuItem::linkToCrud('entity.subscribers', 'fa fa-envelope', Subscriber::class);
+        $subscribersMenuItem = MenuItem::linkTo(SubscriberCrudController::class, 'entity.subscribers', 'fa fa-envelope');
         if ($unconfirmedCount > 0) {
             $subscribersMenuItem->setBadge($unconfirmedCount, 'info');
         }
@@ -102,11 +95,11 @@ class DashboardController extends AbstractDashboardController
 
         // Administration section
         yield MenuItem::section('menu.administration');
-        yield MenuItem::linkToCrud('entity.users', 'fa fa-users', User::class);
+        yield MenuItem::linkTo(UserCrudController::class, 'entity.users', 'fa fa-users');
 
         // Resources section
         yield MenuItem::section('menu.resources');
-        yield MenuItem::linkToCrud('menu.form_field_reference', 'fa-solid fa-table-cells', FormFieldReference::class)->setAction(Action::NEW);
+        yield MenuItem::linkTo(FormFieldReferenceCrudController::class, 'menu.form_field_reference', 'fa-solid fa-table-cells')->setAction(Action::NEW);
         yield MenuItem::linkToRoute('menu.fixtures_data', 'fa-solid fa-database', 'admin_regenerate_fixtures');
 
         // Links section

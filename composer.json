@@ -3,7 +3,7 @@
     "license": "MIT",
     "type": "project",
     "description": "EasyAdmin Demo Application",
-    "minimum-stability": "stable",
+    "minimum-stability": "beta",
     "prefer-stable": true,
     "require": {
         "php": ">=8.4",
@@ -14,7 +14,7 @@
         "doctrine/doctrine-migrations-bundle": "^3.7",
         "doctrine/lexer": "^3.0.1",
         "doctrine/orm": "^3.6.2",
-        "easycorp/easyadmin-bundle": "^4.28.0",
+        "easycorp/easyadmin-bundle": "5.0.0-BETA2",
         "phpdocumentor/reflection-docblock": "^5.6.6",
         "phpstan/phpdoc-parser": "^2.3.2",
         "symfony/asset": ">=8.0.4",
@@ -109,10 +109,10 @@
         "symfony/browser-kit": ">=8.0.4",
         "symfony/css-selector": ">=8",
         "symfony/debug-bundle": ">=8",
-        "symfony/maker-bundle": "^1.65.1",
+        "symfony/maker-bundle": "^1.66.0",
         "symfony/phpunit-bridge": ">=8.0.3",
         "symfony/stopwatch": ">=8",
         "symfony/web-profiler-bundle": ">=8.0.4",
-        "zenstruck/foundry": "^2.8.6"
+        "zenstruck/foundry": "^2.9.2"
     }
 }

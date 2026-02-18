@@ -60,96 +60,11 @@ class PostCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
-        if ('Crud::PAGE_INDEX' === $pageName) {
-            return [
-                IdField::new('id'),
-                TextField::new('title', 'post.title')
-                    ->setTemplatePath('admin/post/_title_with_metadata.html.twig'),
-                ChoiceField::new('status', 'post.status')
-                    ->setChoices(PostStatus::choices())->renderAsBadges(PostStatus::badges()),
-                AssociationField::new('author', 'post.author')
-                    ->setTemplatePath('admin/post/_author_card.html.twig'),
-                AssociationField::new('category', 'post.category')
-                    ->setTemplatePath('admin/post/_category_badge.html.twig'),
-                BooleanField::new('isFeatured', 'post.isFeatured')
-                    ->renderAsSwitch(false)
-                    ->hideValueWhenFalse(),
-            ];
+        if (Crud::PAGE_INDEX === $pageName) {
+            return $this->getIndexFields();
         }
 
-        // Main column (content)
-        yield FormField::addColumn('col-lg-8');
-
-        yield FormField::addFieldset('post.fieldset.content', 'fa fa-pen');
-
-        yield TextField::new('title', 'post.title');
-
-        yield SlugField::new('slug', 'post.slug')
-            ->setTargetFieldName('title');
-
-        yield ImageField::new('featuredImage', 'post.featuredImage')
-            ->setUploadDir('public/uploads/posts')
-            ->setBasePath('uploads/posts')
-            ->setUploadedFileNamePattern('[year]/[month]/[slug]-[contenthash].[extension]');
-
-        yield TextEditorField::new('content', 'post.content')
-            ->setNumOfRows(20)
-            ->onlyOnForms();
-
-        yield TextField::new('content', 'post.content')
-            ->onlyOnDetail()
-            ->renderAsHtml();
-
-        yield TextareaField::new('summary', 'post.summary')
-            ->setNumOfRows(3);
-
-        // Sidebar column (metadata)
-        yield FormField::addColumn('col-lg-4');
-
-        yield FormField::addFieldset('post.fieldset.status', 'fa fa-flag');
-
-        yield ChoiceField::new('status', 'post.status')
-            ->setChoices(PostStatus::choices())
-            ->renderAsBadges(PostStatus::badges())
-            ->setPreferredChoices([PostStatus::Published]);
-
-        yield BooleanField::new('isFeatured', 'post.isFeatured')
-            ->renderAsSwitch(true);
-
-        yield DateTimeField::new('publishedAt', 'post.publishedAt');
-
-        yield DateTimeField::new('scheduledAt', 'post.scheduledAt')
-            ->setHelp('post.scheduledAt_help');
-
-        // Classification fieldset
-        yield FormField::addFieldset('post.fieldset.classification', 'fa fa-folder-tree');
-
-        yield AssociationField::new('author', 'post.author')
-            ->setSortProperty('fullName')
-            ->autocomplete(template: 'admin/post/_author_autocomplete.html.twig', renderAsHtml: true);
-
-        yield AssociationField::new('category', 'post.category')
-            ->setSortProperty('name')
-            ->autocomplete(callback: static fn (Category $c): string => sprintf('%s %s', $c->getIcon(), $c->getName()));
-
-        yield AssociationField::new('tags', 'post.tags')
-            ->autocomplete(callback: static fn (Tag $tag): string => $tag->getName())
-            ->setFormTypeOption('by_reference', false);
-
-        yield FormField::addFieldset('post.fieldset.series', 'fa fa-layer-group')->collapsible();
-
-        yield AssociationField::new('series', 'post.series');
-
-        yield IntegerField::new('seriesPosition', 'post.seriesPosition')
-            ->setHelp('post.seriesPosition_help');
-
-        // Statistics fieldset (detail only)
-        yield FormField::addFieldset('post.fieldset.statistics', 'fa fa-chart-line')
-            ->onlyOnDetail();
-
-        yield IntegerField::new('viewCount', 'post.viewCount')
-            ->setThousandsSeparator(',')
-            ->onlyOnDetail();
+        return $this->getDetailAndFormFields();
     }
 
     public function configureFilters(Filters $filters): Filters
@@ -316,6 +231,101 @@ class PostCrudController extends AbstractCrudController
         $this->addFlash('success', sprintf('%d post(s) marked as featured.', $count));
 
         return $this->redirect($batchActionDto->getReferrerUrl());
+    }
+
+    private function getIndexFields(): array
+    {
+        return [
+            IdField::new('id'),
+            TextField::new('title', 'post.title')
+                ->setTemplatePath('admin/post/_title_with_metadata.html.twig'),
+            ChoiceField::new('status', 'post.status')
+                ->setChoices(PostStatus::choices())->renderAsBadges(PostStatus::badges()),
+            AssociationField::new('author', 'post.author')
+                ->setTemplatePath('admin/post/_author_card.html.twig'),
+            AssociationField::new('category', 'post.category')
+                ->setTemplatePath('admin/post/_category_badge.html.twig'),
+            BooleanField::new('isFeatured', 'post.isFeatured')
+                ->renderAsSwitch(false)
+                ->hideValueWhenFalse(),
+        ];
+    }
+
+    private function getDetailAndFormFields(): iterable
+    {
+        // Main column (content)
+        yield FormField::addColumn('col-lg-8');
+
+        yield FormField::addFieldset('post.fieldset.content', 'fa fa-pen');
+
+        yield TextField::new('title', 'post.title');
+
+        yield SlugField::new('slug', 'post.slug')
+            ->setTargetFieldName('title');
+
+        yield ImageField::new('featuredImage', 'post.featuredImage')
+            ->setUploadDir('public/uploads/posts')
+            ->setBasePath('uploads/posts')
+            ->setUploadedFileNamePattern('[year]/[month]/[slug]-[contenthash].[extension]');
+
+        yield TextEditorField::new('content', 'post.content')
+            ->setNumOfRows(20)
+            ->onlyOnForms();
+
+        yield TextField::new('content', 'post.content')
+            ->onlyOnDetail()
+            ->renderAsHtml();
+
+        yield TextareaField::new('summary', 'post.summary')
+            ->setNumOfRows(3);
+
+        // Sidebar column (metadata)
+        yield FormField::addColumn('col-lg-4');
+
+        yield FormField::addFieldset('post.fieldset.status', 'fa fa-flag');
+
+        yield ChoiceField::new('status', 'post.status')
+            ->setChoices(PostStatus::choices())
+            ->renderAsBadges(PostStatus::badges())
+            ->setPreferredChoices([PostStatus::Published]);
+
+        yield BooleanField::new('isFeatured', 'post.isFeatured')
+            ->renderAsSwitch(true);
+
+        yield DateTimeField::new('publishedAt', 'post.publishedAt');
+
+        yield DateTimeField::new('scheduledAt', 'post.scheduledAt')
+            ->setHelp('post.scheduledAt_help');
+
+        // Classification fieldset
+        yield FormField::addFieldset('post.fieldset.classification', 'fa fa-folder-tree');
+
+        yield AssociationField::new('author', 'post.author')
+            ->setSortProperty('fullName')
+            ->autocomplete(template: 'admin/post/_author_autocomplete.html.twig', renderAsHtml: true);
+
+        yield AssociationField::new('category', 'post.category')
+            ->setSortProperty('name')
+            ->autocomplete(callback: static fn (Category $c): string => sprintf('%s %s', $c->getIcon(), $c->getName()));
+
+        yield AssociationField::new('tags', 'post.tags')
+            ->autocomplete(callback: static fn (Tag $tag): string => $tag->getName())
+            ->setFormTypeOption('by_reference', false);
+
+        yield FormField::addFieldset('post.fieldset.series', 'fa fa-layer-group')->collapsible();
+
+        yield AssociationField::new('series', 'post.series');
+
+        yield IntegerField::new('seriesPosition', 'post.seriesPosition')
+            ->setHelp('post.seriesPosition_help');
+
+        // Statistics fieldset (detail only)
+        yield FormField::addFieldset('post.fieldset.statistics', 'fa fa-chart-line')
+            ->onlyOnDetail();
+
+        yield IntegerField::new('viewCount', 'post.viewCount')
+            ->setThousandsSeparator(',')
+            ->onlyOnDetail();
     }
 
     /**
