@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c8dce0c5fb2f23e2ab8f42f25e95da4c",
+    "content-hash": "ec005aa73f1547edcd1e8ffd7a08129e",
     "packages": [
         {
             "name": "composer/semver",
@@ -1191,16 +1191,16 @@
         },
         {
             "name": "easycorp/easyadmin-bundle",
-            "version": "v5.0.0-BETA2",
+            "version": "v5.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/EasyCorp/EasyAdminBundle.git",
-                "reference": "e597687c91a9a742f12812517060f82073757525"
+                "reference": "e2134a0d1e90245790ac131276bb283077e40562"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/EasyCorp/EasyAdminBundle/zipball/e597687c91a9a742f12812517060f82073757525",
-                "reference": "e597687c91a9a742f12812517060f82073757525",
+                "url": "https://api.github.com/repos/EasyCorp/EasyAdminBundle/zipball/e2134a0d1e90245790ac131276bb283077e40562",
+                "reference": "e2134a0d1e90245790ac131276bb283077e40562",
                 "shasum": ""
             },
             "require": {
@@ -1285,7 +1285,7 @@
             ],
             "support": {
                 "issues": "https://github.com/EasyCorp/EasyAdminBundle/issues",
-                "source": "https://github.com/EasyCorp/EasyAdminBundle/tree/v5.0.0-BETA2"
+                "source": "https://github.com/EasyCorp/EasyAdminBundle/tree/v5.0.0"
             },
             "funding": [
                 {
@@ -1293,7 +1293,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-02-18T19:21:32+00:00"
+            "time": "2026-02-26T07:02:18+00:00"
         },
         {
             "name": "egulias/email-validator",
@@ -10627,10 +10627,8 @@
         }
     ],
     "aliases": [],
-    "minimum-stability": "beta",
-    "stability-flags": {
-        "easycorp/easyadmin-bundle": 10
-    },
+    "minimum-stability": "stable",
+    "stability-flags": {},
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
