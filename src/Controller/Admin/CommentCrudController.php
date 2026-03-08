@@ -10,7 +10,6 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
-use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\BatchActionDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
@@ -149,11 +148,9 @@ class CommentCrudController extends AbstractCrudController
             ->add(Crud::PAGE_INDEX, $batchSpam);
     }
 
-    #[AdminRoute]
-    public function approveComment(AdminContext $context): Response
+    #[AdminRoute('/{entityId:comment.id}/approve')]
+    public function approveComment(Comment $comment): Response
     {
-        /** @var Comment $comment */
-        $comment = $context->getEntity()->getInstance();
         $comment->approve();
 
         $this->entityManager->flush();
@@ -163,11 +160,9 @@ class CommentCrudController extends AbstractCrudController
         return $this->redirectToRoute('admin_comment_index');
     }
 
-    #[AdminRoute]
-    public function rejectComment(AdminContext $context): Response
+    #[AdminRoute('/{entityId:comment.id}/reject')]
+    public function rejectComment(Comment $comment): Response
     {
-        /** @var Comment $comment */
-        $comment = $context->getEntity()->getInstance();
         $comment->reject();
 
         $this->entityManager->flush();
@@ -177,11 +172,9 @@ class CommentCrudController extends AbstractCrudController
         return $this->redirectToRoute('admin_comment_index');
     }
 
-    #[AdminRoute]
-    public function markCommentAsSpam(AdminContext $context): Response
+    #[AdminRoute('/{entityId:comment.id}/mark-as-spam')]
+    public function markCommentAsSpam(Comment $comment): Response
     {
-        /** @var Comment $comment */
-        $comment = $context->getEntity()->getInstance();
         $comment->markAsSpam();
 
         $this->entityManager->flush();
@@ -210,7 +203,7 @@ class CommentCrudController extends AbstractCrudController
 
         $this->addFlash('success', sprintf('%d comment(s) approved.', $count));
 
-        return $this->redirect($batchActionDto->getReferrerUrl());
+        return $this->redirectToRoute('admin_comment_index');
     }
 
     #[AdminRoute]
@@ -232,7 +225,7 @@ class CommentCrudController extends AbstractCrudController
 
         $this->addFlash('success', sprintf('%d comment(s) rejected.', $count));
 
-        return $this->redirect($batchActionDto->getReferrerUrl());
+        return $this->redirectToRoute('admin_comment_index');
     }
 
     #[AdminRoute]
@@ -254,6 +247,6 @@ class CommentCrudController extends AbstractCrudController
 
         $this->addFlash('success', sprintf('%d comment(s) marked as spam.', $count));
 
-        return $this->redirect($batchActionDto->getReferrerUrl());
+        return $this->redirectToRoute('admin_comment_index');
     }
 }

@@ -10,7 +10,6 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
-use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\BatchActionDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
@@ -162,11 +161,9 @@ class SubscriberCrudController extends AbstractCrudController
             ->add(Crud::PAGE_INDEX, $batchUnsubscribe);
     }
 
-    #[AdminRoute]
-    public function confirmSubscriber(AdminContext $context): Response
+    #[AdminRoute('/{entityId:subscriber.id}/confirm')]
+    public function confirmSubscriber(Subscriber $subscriber): Response
     {
-        /** @var Subscriber $subscriber */
-        $subscriber = $context->getEntity()->getInstance();
         $subscriber->confirm();
 
         $this->entityManager->flush();
@@ -176,11 +173,9 @@ class SubscriberCrudController extends AbstractCrudController
         return $this->redirectToRoute('admin_subscriber_index');
     }
 
-    #[AdminRoute]
-    public function unsubscribeSubscriber(AdminContext $context): Response
+    #[AdminRoute('/{entityId:subscriber.id}/unsubscribe')]
+    public function unsubscribeSubscriber(Subscriber $subscriber): Response
     {
-        /** @var Subscriber $subscriber */
-        $subscriber = $context->getEntity()->getInstance();
         $subscriber->unsubscribe();
 
         $this->entityManager->flush();
@@ -209,7 +204,7 @@ class SubscriberCrudController extends AbstractCrudController
 
         $this->addFlash('success', sprintf('%d subscriber(s) confirmed.', $count));
 
-        return $this->redirect($batchActionDto->getReferrerUrl());
+        return $this->redirect('admin_subscriber_index');
     }
 
     #[AdminRoute]
@@ -231,6 +226,6 @@ class SubscriberCrudController extends AbstractCrudController
 
         $this->addFlash('success', sprintf('%d subscriber(s) unsubscribed.', $count));
 
-        return $this->redirect($batchActionDto->getReferrerUrl());
+        return $this->redirectToRoute('admin_subscriber_index');
     }
 }

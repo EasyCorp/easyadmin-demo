@@ -14,7 +14,6 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\ActionGroup;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
-use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\BatchActionDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
@@ -148,11 +147,9 @@ class PostCrudController extends AbstractCrudController
             ->add(Crud::PAGE_INDEX, $batchFeatured);
     }
 
-    #[AdminRoute(path: '{entityId}/publish', name: 'publish')]
-    public function publishPost(AdminContext $context): Response
+    #[AdminRoute('/{entityId:post.id}/publish')]
+    public function publishPost(Post $post): Response
     {
-        /** @var Post $post */
-        $post = $context->getEntity()->getInstance();
         $post->setStatus(PostStatus::Published);
         $post->setPublishedAt(new \DateTimeImmutable());
 
@@ -162,11 +159,9 @@ class PostCrudController extends AbstractCrudController
         return $this->redirectToRoute('admin_post_index');
     }
 
-    #[AdminRoute(path: '{entityId}/unpublish', name: 'unpublish')]
-    public function unpublishPost(AdminContext $context): Response
+    #[AdminRoute('/{entityId:post.id}/unpublish')]
+    public function unpublishPost(Post $post): Response
     {
-        /** @var Post $post */
-        $post = $context->getEntity()->getInstance();
         $post->setStatus(PostStatus::Draft);
 
         $this->entityManager->flush();
@@ -175,11 +170,9 @@ class PostCrudController extends AbstractCrudController
         return $this->redirectToRoute('admin_post_index');
     }
 
-    #[AdminRoute(path: '{entityId}/archive', name: 'archive')]
-    public function archivePost(AdminContext $context): Response
+    #[AdminRoute('/{entityId:post.id}/archive')]
+    public function archivePost(Post $post): Response
     {
-        /** @var Post $post */
-        $post = $context->getEntity()->getInstance();
         $post->setStatus(PostStatus::Archived);
 
         $this->entityManager->flush();
@@ -188,7 +181,7 @@ class PostCrudController extends AbstractCrudController
         return $this->redirectToRoute('admin_post_index');
     }
 
-    #[AdminRoute(path: 'batch-publish', name: 'batch_publish', options: ['methods' => ['POST']])]
+    #[AdminRoute(options: ['methods' => ['POST']])]
     public function batchPublish(BatchActionDto $batchActionDto): Response
     {
         $count = $this->processBatchAction(
@@ -202,10 +195,10 @@ class PostCrudController extends AbstractCrudController
 
         $this->addFlash('success', sprintf('%d post(s) published.', $count));
 
-        return $this->redirect($batchActionDto->getReferrerUrl());
+        return $this->redirectToRoute('admin_post_index');
     }
 
-    #[AdminRoute(path: 'batch-archive', name: 'batch_archive', options: ['methods' => ['POST']])]
+    #[AdminRoute(options: ['methods' => ['POST']])]
     public function batchArchive(BatchActionDto $batchActionDto): Response
     {
         $count = $this->processBatchAction(
@@ -216,10 +209,10 @@ class PostCrudController extends AbstractCrudController
 
         $this->addFlash('success', sprintf('%d post(s) archived.', $count));
 
-        return $this->redirect($batchActionDto->getReferrerUrl());
+        return $this->redirectToRoute('admin_post_index');
     }
 
-    #[AdminRoute(path: 'batch-featured', name: 'batch_featured', options: ['methods' => ['POST']])]
+    #[AdminRoute(options: ['methods' => ['POST']])]
     public function batchMarkAsFeatured(BatchActionDto $batchActionDto): Response
     {
         $count = $this->processBatchAction(
@@ -230,7 +223,7 @@ class PostCrudController extends AbstractCrudController
 
         $this->addFlash('success', sprintf('%d post(s) marked as featured.', $count));
 
-        return $this->redirect($batchActionDto->getReferrerUrl());
+        return $this->redirectToRoute('admin_post_index');
     }
 
     private function getIndexFields(): array
