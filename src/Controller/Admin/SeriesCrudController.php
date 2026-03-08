@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Admin\Field\SeriesProgressField;
 use App\Entity\Series;
 use Doctrine\ORM\EntityManagerInterface;
+use EasyCorp\Bundle\EasyAdminBundle\Attribute\AdminRoute;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -63,6 +64,7 @@ class SeriesCrudController extends AbstractCrudController
             ->setPermission(Action::DELETE, 'ROLE_ADMIN');
     }
 
+    #[AdminRoute]
     public function markComplete(AdminContext $context): Response
     {
         /** @var Series $series */
@@ -75,6 +77,7 @@ class SeriesCrudController extends AbstractCrudController
         return $this->redirectToRoute('admin_series_index');
     }
 
+    #[AdminRoute]
     public function markIncomplete(AdminContext $context): Response
     {
         /** @var Series $series */

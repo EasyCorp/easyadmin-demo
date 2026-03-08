@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Entity\Subscriber;
 use App\Enum\SubscriberSource;
 use Doctrine\ORM\EntityManagerInterface;
+use EasyCorp\Bundle\EasyAdminBundle\Attribute\AdminRoute;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -161,6 +162,7 @@ class SubscriberCrudController extends AbstractCrudController
             ->add(Crud::PAGE_INDEX, $batchUnsubscribe);
     }
 
+    #[AdminRoute]
     public function confirmSubscriber(AdminContext $context): Response
     {
         /** @var Subscriber $subscriber */
@@ -174,6 +176,7 @@ class SubscriberCrudController extends AbstractCrudController
         return $this->redirectToRoute('admin_subscriber_index');
     }
 
+    #[AdminRoute]
     public function unsubscribeSubscriber(AdminContext $context): Response
     {
         /** @var Subscriber $subscriber */
@@ -187,6 +190,7 @@ class SubscriberCrudController extends AbstractCrudController
         return $this->redirectToRoute('admin_subscriber_index');
     }
 
+    #[AdminRoute]
     public function batchConfirm(BatchActionDto $batchActionDto): Response
     {
         $repository = $this->entityManager->getRepository(Subscriber::class);
@@ -208,6 +212,7 @@ class SubscriberCrudController extends AbstractCrudController
         return $this->redirect($batchActionDto->getReferrerUrl());
     }
 
+    #[AdminRoute]
     public function batchUnsubscribe(BatchActionDto $batchActionDto): Response
     {
         $repository = $this->entityManager->getRepository(Subscriber::class);

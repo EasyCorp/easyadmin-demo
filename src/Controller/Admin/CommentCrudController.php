@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Entity\Comment;
 use App\Enum\CommentStatus;
 use Doctrine\ORM\EntityManagerInterface;
+use EasyCorp\Bundle\EasyAdminBundle\Attribute\AdminRoute;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -148,6 +149,7 @@ class CommentCrudController extends AbstractCrudController
             ->add(Crud::PAGE_INDEX, $batchSpam);
     }
 
+    #[AdminRoute]
     public function approveComment(AdminContext $context): Response
     {
         /** @var Comment $comment */
@@ -161,6 +163,7 @@ class CommentCrudController extends AbstractCrudController
         return $this->redirectToRoute('admin_comment_index');
     }
 
+    #[AdminRoute]
     public function rejectComment(AdminContext $context): Response
     {
         /** @var Comment $comment */
@@ -174,6 +177,7 @@ class CommentCrudController extends AbstractCrudController
         return $this->redirectToRoute('admin_comment_index');
     }
 
+    #[AdminRoute]
     public function markCommentAsSpam(AdminContext $context): Response
     {
         /** @var Comment $comment */
@@ -187,6 +191,7 @@ class CommentCrudController extends AbstractCrudController
         return $this->redirectToRoute('admin_comment_index');
     }
 
+    #[AdminRoute]
     public function batchApprove(BatchActionDto $batchActionDto): Response
     {
         $repository = $this->entityManager->getRepository(Comment::class);
@@ -208,6 +213,7 @@ class CommentCrudController extends AbstractCrudController
         return $this->redirect($batchActionDto->getReferrerUrl());
     }
 
+    #[AdminRoute]
     public function batchReject(BatchActionDto $batchActionDto): Response
     {
         $repository = $this->entityManager->getRepository(Comment::class);
@@ -229,6 +235,7 @@ class CommentCrudController extends AbstractCrudController
         return $this->redirect($batchActionDto->getReferrerUrl());
     }
 
+    #[AdminRoute]
     public function batchMarkAsSpam(BatchActionDto $batchActionDto): Response
     {
         $repository = $this->entityManager->getRepository(Comment::class);
