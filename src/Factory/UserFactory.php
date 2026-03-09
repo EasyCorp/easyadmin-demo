@@ -17,8 +17,8 @@ final class UserFactory extends PersistentObjectFactory
 
     protected function defaults(): array|callable
     {
-        $firstName = self::faker()->firstName();
-        $lastName = self::faker()->lastName();
+        $firstName = mb_substr(self::faker()->firstName(), 0, 100);
+        $lastName = mb_substr(self::faker()->lastName(), 0, 100);
 
         return [
             'fullName' => $firstName.' '.$lastName,
@@ -35,8 +35,8 @@ final class UserFactory extends PersistentObjectFactory
             ]),
             'isVerified' => self::faker()->boolean(70),
             'bio' => self::faker()->boolean(60) ? self::faker()->paragraph(2) : null,
-            'website' => self::faker()->boolean(40) ? self::faker()->url() : null,
-            'twitterHandle' => self::faker()->boolean(30) ? self::faker()->userName() : null,
+            'website' => self::faker()->boolean(40) ? mb_substr(self::faker()->url(), 0, 255) : null,
+            'twitterHandle' => self::faker()->boolean(30) ? mb_substr(self::faker()->userName(), 0, 50) : null,
             'lastLoginAt' => self::faker()->boolean(80)
                 ? \DateTimeImmutable::createFromMutable(self::faker()->dateTimeBetween('-1 month', 'now'))
                 : null,
