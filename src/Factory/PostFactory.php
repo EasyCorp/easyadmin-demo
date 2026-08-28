@@ -60,7 +60,7 @@ final class PostFactory extends PersistentObjectFactory
         return [
             'title' => $title,
             'slug' => $slugger->slug($title)->lower(),
-            'summary' => self::faker()->paragraph(3),
+            'summary' => mb_substr(self::faker()->paragraph(3), 0, 255),
             'content' => self::generateRichContent(),
             'author' => UserFactory::random(),
             'status' => $status,

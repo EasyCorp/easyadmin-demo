@@ -25,7 +25,7 @@ final class SubscriberFactory extends PersistentObjectFactory
 
         return [
             'email' => self::faker()->unique()->safeEmail(),
-            'name' => self::faker()->boolean(80) ? self::faker()->name() : null,
+            'name' => self::faker()->boolean(80) ? mb_substr(self::faker()->name(), 0, 100) : null,
             'subscribedAt' => $subscribedAt,
             'isConfirmed' => $isConfirmed,
             'confirmedAt' => $isConfirmed
