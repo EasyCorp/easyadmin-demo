@@ -1,0 +1,9 @@
+{% set stock = field.value %}
+
+{% if stock == 0 %}
+    <twig:ea:Badge color="danger">{{ 'product.out_of_stock'|trans }}</twig:ea:Badge>
+{% elseif stock < 10 %}
+    <twig:ea:Badge color="warning">{{ stock }}</twig:ea:Badge>
+{% else %}
+    {{ stock }}
+{% endif %}

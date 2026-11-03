@@ -1,0 +1,6 @@
+{% set product = entity.instance %}
+
+{% if product.discount > 0 %}
+    <twig:ea:Badge color="warning" size="sm" class="me-1">-{{ product.discount }}%</twig:ea:Badge>
+{% endif %}
+{{ field.formattedValue }}

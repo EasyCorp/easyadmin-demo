@@ -1,0 +1,12 @@
+{# @var field \EasyCorp\Bundle\EasyAdminBundle\Dto\FieldDto #}
+{% set address = field.value %}
+
+{% if address %}
+    <address class="mb-0">
+        {{ address.street }}<br>
+        {{ address.postalCode }} {{ address.city }}<br>
+        <twig:ea:Flag :countryCode="address.country" showName />
+    </address>
+{% else %}
+    {% include '@EasyAdmin/label/null.html.twig' %}
+{% endif %}

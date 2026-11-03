@@ -1,18 +1,116 @@
-{% extends '@EasyAdmin/layout.html.twig' %}
+{% extends '@EasyAdmin/page/content.html.twig' %}
 
 {% block body_id 'dashboard' %}
 
+{% block content_title %}{{ 'dashboard.title'|trans }}{% endblock %}
+
 {% block main %}
-    <h1 class="page-title">{{ 'dashboard.title'|trans }}</h1>
+    <div data-ea-not-prose>
+        <div class="dashboard-welcome">
+            <p class="dashboard-welcome-intro">{{ 'dashboard.description'|trans }}</p>
 
-    <p class="description">{{ 'dashboard.description'|trans }}</p>
+            <div class="row g-4">
+                <div class="col-lg-9">
+                    <twig:DashboardFieldset icon="users" title="{{ 'demo.users.title'|trans }}">
+                        <div class="row g-3">
+                            {% for demo_user in demo_users %}
+                                {% set is_current_user = app.user and app.user.userIdentifier == demo_user.email %}
+                                <div class="col-md-4">
+                                    <form method="post" action="{{ path('demo_login') }}" class="demo-user {{ is_current_user ? 'is-current' }}">
+                                        <input type="hidden" name="username" value="{{ demo_user.value }}">
+                                        <input type="hidden" name="_token" value="{{ csrf_token(csrf_token_id) }}">
 
-    <div class="locale-switcher mt-4">
-        {% for locale in ea().dashboardLocales %}
-            <a href="{{ path('admin', {_locale: locale.locale}) }}" class="d-block mb-2 text-decoration-none">
-                <span class="badge badge-secondary me-2">{{ locale.locale|upper }}</span>
-                {{ 'dashboard.locale_switcher'|trans({}, 'messages', locale.locale)|raw }}
-            </a>
-        {% endfor %}
+                                        <div class="demo-user-header">
+                                            <img src="{{ avatar_url(demo_user.value ~ '.webp', demo_user.email, 40) }}" class="rounded-circle" width="40" height="40" alt="">
+                                            <div class="demo-user-identity">
+                                                <div class="demo-user-name">{{ ('demo.users.' ~ demo_user.value ~ '.name')|trans }}</div>
+                                                <div class="demo-user-full-name">{{ demo_user.fullName }}</div>
+                                            </div>
+                                        </div>
+                                        <p class="demo-user-description">{{ ('demo.users.' ~ demo_user.value ~ '.description')|trans }}</p>
+
+                                        {% if is_current_user %}
+                                            <div class="demo-user-actions">
+                                                <twig:ea:Badge color="success">{{ 'demo.users.current'|trans }}</twig:ea:Badge>
+                                                <twig:ea:Button htmlElement="a" size="sm" icon="log-out" href="{{ logout_path() }}">{{ 'demo.users.logout'|trans }}</twig:ea:Button>
+                                            </div>
+                                        {% else %}
+                                            <twig:ea:Button size="sm">{{ 'demo.users.login'|trans }}</twig:ea:Button>
+                                        {% endif %}
+                                    </form>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </twig:DashboardFieldset>
+                </div>
+
+                <div class="col-lg-3">
+                    <twig:DashboardFieldset icon="languages" title="{{ 'demo.language'|trans }}">
+                        <div class="dashboard-languages">
+                            {% for locale in ea().dashboardLocales %}
+                                <twig:ea:Button htmlElement="a" size="sm" :color="locale.locale == app.request.locale ? 'primary' : 'default'" href="{{ path('admin', {_locale: locale.locale}) }}">{{ locale.name }}</twig:ea:Button>
+                            {% endfor %}
+                        </div>
+                    </twig:DashboardFieldset>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-lg-5">
+                <twig:DashboardFieldset icon="star" title="{{ 'demo.dashboard.latest_pending_reviews'|trans }}">
+                    <ul class="dashboard-list">
+                        {% for review in latest_pending_reviews %}
+                            <li>
+                                <a href="{{ path('admin_review_detail', {entityId: review.id}) }}">{{ review.content|striptags|u.truncate(70, '...') }}</a>
+                                <small class="text-muted dashboard-list-author">
+                                    <img src="{{ avatar_url(review.customer.avatar, review.customer.email, 18) }}" class="rounded-circle object-fit-cover" width="18" height="18" alt="">
+                                    {{ review.customer.name }}
+                                </small>
+                            </li>
+                        {% else %}
+                            <li class="text-muted">{{ 'demo.dashboard.nothing_pending'|trans }}</li>
+                        {% endfor %}
+                    </ul>
+                </twig:DashboardFieldset>
+            </div>
+
+            <div class="col-lg-4">
+                <twig:DashboardFieldset id="latest-products" icon="file-text" title="{{ (is_granted('ROLE_EDITOR') ? 'demo.dashboard.latest_drafts' : 'demo.dashboard.latest_products')|trans }}">
+                    <ul class="dashboard-list">
+                        {% for product in latest_products %}
+                            <li class="dashboard-list-product">
+                                {% if product.image %}
+                                    <img src="{{ asset('uploads/products/' ~ product.image) }}" width="36" height="36" alt="">
+                                {% endif %}
+                                <div class="dashboard-list-product-details">
+                                    <a href="{{ path(product.family.isPlantFamily ? 'admin_plant_detail' : 'admin_supply_detail', {entityId: product.id}) }}">{{ product.name }}</a>
+                                    <small class="text-muted">{{ product.manager.fullName ?? '' }}</small>
+                                </div>
+                            </li>
+                        {% else %}
+                            <li class="text-muted">{{ 'demo.dashboard.nothing_pending'|trans }}</li>
+                        {% endfor %}
+                    </ul>
+                </twig:DashboardFieldset>
+            </div>
+
+            <div class="col-lg-3">
+                <twig:DashboardFieldset icon="chart-column" title="{{ 'demo.dashboard.stats'|trans }}">
+                    <ul class="dashboard-stats">
+                        {% for stat in [
+                            {label: 'demo.dashboard.published_products', value: published_products, url: null},
+                            {label: 'demo.dashboard.units_in_stock', value: units_in_stock, url: null},
+                            {label: 'demo.dashboard.pending_reviews', value: pending_reviews, url: path('admin_pending_review_index')},
+                            {label: 'demo.dashboard.confirmed_customers', value: confirmed_customers, url: path('admin_customer_index')},
+                        ] %}
+                            {# the stats that count plants and supplies together have no listing to link to #}
+                            {% set stat_content %}<span>{{ stat.label|trans }}</span> <strong>{{ stat.value|format_number }}</strong>{% endset %}
+                            <li>{% if stat.url %}<a href="{{ stat.url }}">{{ stat_content }}</a>{% else %}<span class="dashboard-stat">{{ stat_content }}</span>{% endif %}</li>
+                        {% endfor %}
+                    </ul>
+                </twig:DashboardFieldset>
+            </div>
+        </div>
     </div>
 {% endblock %}

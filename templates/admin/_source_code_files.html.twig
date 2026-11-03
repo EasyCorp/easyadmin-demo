@@ -1,0 +1,38 @@
+{% set has_tabs = files|length > 1 %}
+
+{% if has_tabs %}
+    {# the GitHub link is a sibling of the tab button because links can't be nested inside buttons #}
+    <div class="source-code-tabs" role="tablist" aria-label="{{ 'action.source_code_files'|trans }}">
+        {% for file in files %}
+            <div class="source-code-tab">
+                <button type="button" id="source-code-tab-{{ loop.index }}" class="source-code-tab-button{{ loop.first ? ' active' }}"
+                        role="tab" data-bs-toggle="tab" data-bs-target="#source-code-pane-{{ loop.index }}"
+                        aria-controls="source-code-pane-{{ loop.index }}" aria-selected="{{ loop.first ? 'true' : 'false' }}"
+                        {{- loop.first ? '' : ' tabindex="-1"' }}>
+                    {{ include('admin/_source_code_file_name.html.twig', {path: file.path}, with_context: false) }}
+                </button>
+                {{ include('admin/_source_code_github_link.html.twig', {path: file.path}, with_context: false) }}
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
+
+<div class="source-code-panes{{ has_tabs ? ' tab-content' }}">
+    {% for file in files %}
+        <div class="source-code-file{{ has_tabs ? ' tab-pane' }}{{ has_tabs and loop.first ? ' active' }}"
+             {%- if has_tabs %} id="source-code-pane-{{ loop.index }}" role="tabpanel" aria-labelledby="source-code-tab-{{ loop.index }}"{% endif %}>
+            {% if not has_tabs %}
+                <div class="source-code-file-header">
+                    {{ include('admin/_source_code_file_name.html.twig', {path: file.path}, with_context: false) }}
+                    {{ include('admin/_source_code_github_link.html.twig', {path: file.path}, with_context: false) }}
+                </div>
+            {% endif %}
+            {# marks are siblings of the code, so syntax highlighting can't break them #}
+            <pre tabindex="0"><span class="source-code-lines">
+                {%- for mark in file.marks -%}
+                    <span class="source-code-mark" style="--first-line: {{ mark.start }}; --num-lines: {{ mark.length }}" aria-hidden="true"></span>
+                {%- endfor -%}
+                <code class="language-{{ file.language }}">{{ file.code }}</code></span></pre>
+        </div>
+    {% endfor %}
+</div>

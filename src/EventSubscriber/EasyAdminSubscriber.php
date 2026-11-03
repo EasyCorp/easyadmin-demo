@@ -2,9 +2,9 @@
 
 namespace App\EventSubscriber;
 
-use App\Entity\Category;
-use App\Entity\Post;
-use App\Entity\Series;
+use App\Entity\Family;
+use App\Entity\Product;
+use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Event\BeforeEntityPersistedEvent;
 use EasyCorp\Bundle\EasyAdminBundle\Event\BeforeEntityUpdatedEvent;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -12,11 +12,8 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
 /**
- * Event subscriber for EasyAdmin entity lifecycle events.
- *
- * Demonstrates:
- * - Auto-generating slugs from title/name fields
- * - Auto-setting the author field from the logged-in user
+ * Shows how to change entities right before EasyAdmin saves them: it generates
+ * the missing slugs and assigns new products to the user who creates them.
  */
 class EasyAdminSubscriber implements EventSubscriberInterface
 {
@@ -29,8 +26,8 @@ class EasyAdminSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            BeforeEntityPersistedEvent::class => ['onBeforeEntityPersisted'],
-            BeforeEntityUpdatedEvent::class => ['onBeforeEntityUpdated'],
+            BeforeEntityPersistedEvent::class => 'onBeforeEntityPersisted',
+            BeforeEntityUpdatedEvent::class => 'onBeforeEntityUpdated',
         ];
     }
 
@@ -38,78 +35,32 @@ class EasyAdminSubscriber implements EventSubscriberInterface
     {
         $entity = $event->getEntityInstance();
 
-        // Auto-generate slug
-        $this->autoGenerateSlug($entity);
-
-        // Auto-set author for new entities
-        $this->autoSetAuthor($entity);
+        $this->generateMissingSlug($entity);
+        $this->assignManager($entity);
     }
 
     public function onBeforeEntityUpdated(BeforeEntityUpdatedEvent $event): void
     {
-        $entity = $event->getEntityInstance();
-
-        // Auto-generate slug if empty (allows manual override)
-        $this->autoGenerateSlug($entity);
+        $this->generateMissingSlug($event->getEntityInstance());
     }
 
-    private function autoGenerateSlug(object $entity): void
+    private function generateMissingSlug(object $entity): void
     {
-        // Handle Post entities
-        if ($entity instanceof Post) {
-            if (empty($entity->getSlug()) && !empty($entity->getTitle())) {
-                $slug = $this->slugger->slug($entity->getTitle())->lower();
-                $entity->setSlug($slug);
-            }
-
+        if (!$entity instanceof Product && !$entity instanceof Family) {
             return;
         }
 
-        // Handle Category entities
-        if ($entity instanceof Category) {
-            if (empty($entity->getSlug()) && !empty($entity->getName())) {
-                $slug = $this->slugger->slug($entity->getName())->lower();
-                $entity->setSlug($slug);
-            }
-
-            return;
-        }
-
-        // Handle Series entities
-        if ($entity instanceof Series) {
-            if (empty($entity->getSlug()) && !empty($entity->getTitle())) {
-                $slug = $this->slugger->slug($entity->getTitle())->lower();
-                $entity->setSlug($slug);
-            }
-
-            return;
+        if ('' === (string) $entity->getSlug()) {
+            $entity->setSlug($this->slugger->slug((string) $entity->getName())->lower()->toString());
         }
     }
 
-    private function autoSetAuthor(object $entity): void
+    private function assignManager(object $entity): void
     {
         $user = $this->security->getUser();
 
-        if (!$user instanceof \App\Entity\User) {
-            return;
-        }
-
-        // Handle Post entities
-        if ($entity instanceof Post) {
-            if (null === $entity->getAuthor()) {
-                $entity->setAuthor($user);
-            }
-
-            return;
-        }
-
-        // Handle Series entities
-        if ($entity instanceof Series) {
-            if (null === $entity->getAuthor()) {
-                $entity->setAuthor($user);
-            }
-
-            return;
+        if ($entity instanceof Product && null === $entity->getManager() && $user instanceof User) {
+            $entity->setManager($user);
         }
     }
 }

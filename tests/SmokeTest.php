@@ -2,14 +2,11 @@
 
 namespace App\Tests;
 
-use App\Entity\Category;
-use App\Entity\Comment;
-use App\Entity\Post;
-use App\Entity\Series;
-use App\Entity\Subscriber;
-use App\Entity\Tag;
 use App\Entity\User;
+use App\Enum\DemoUser;
+use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityManagerInterface;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
@@ -18,14 +15,12 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
  */
 class SmokeTest extends WebTestCase
 {
-    /**
-     * Test public pages without authentication.
-     *
-     * @dataProvider publicUrlProvider
-     */
+    use AnonymousClientTrait;
+
+    #[DataProvider('publicUrlProvider')]
     public function testPublicPages(string $url, array $expectedCodes): void
     {
-        $client = static::createClient();
+        $client = $this->createAnonymousClient();
         $client->request('GET', $url);
 
         $this->assertNoServerError($client, $url, $expectedCodes);
@@ -33,116 +28,130 @@ class SmokeTest extends WebTestCase
 
     public static function publicUrlProvider(): iterable
     {
-        // Homepage
+        // homepage
         yield 'homepage' => ['/', [302]];
         yield 'homepage_en' => ['/en/', [200, 302]];
         yield 'homepage_es' => ['/es/', [200, 302]];
 
-        // Admin dashboard
+        // admin dashboard
         yield 'admin_dashboard_en' => ['/en/admin', [200]];
         yield 'admin_dashboard_es' => ['/es/admin', [200]];
 
-        // Admin index pages (publicly accessible in this demo)
-        yield 'admin_category_index' => ['/en/admin/category', [200]];
-        yield 'admin_comment_index' => ['/en/admin/comment', [200]];
-        yield 'admin_post_index' => ['/en/admin/post', [200]];
-        yield 'admin_series_index' => ['/en/admin/series', [200]];
-        yield 'admin_subscriber_index' => ['/en/admin/subscriber', [200]];
+        // admin index pages (publicly accessible in this demo)
+        yield 'admin_plant_index' => ['/en/admin/plant', [200]];
+        yield 'admin_supply_index' => ['/en/admin/supply', [200]];
+        yield 'admin_family_index' => ['/en/admin/family', [200]];
         yield 'admin_tag_index' => ['/en/admin/tag', [200]];
-        yield 'admin_user_index' => ['/en/admin/user', [200]];
+        yield 'admin_supplier_index' => ['/en/admin/supplier', [200]];
+        yield 'admin_customer_index' => ['/en/admin/customer', [200]];
+        yield 'admin_order_index' => ['/en/admin/order', [200]];
+        yield 'admin_review_index' => ['/en/admin/review', [200]];
+        yield 'admin_pending_review_index' => ['/en/admin/pending-review', [200]];
+        yield 'admin_user_index' => ['/en/admin/user', [403]];
 
-        // New/create pages (403 expected - require write permission)
-        yield 'admin_category_new' => ['/en/admin/category/new', [200, 403]];
-        yield 'admin_comment_new' => ['/en/admin/comment/new', [200, 403]];
-        yield 'admin_post_new' => ['/en/admin/post/new', [200, 403]];
-        yield 'admin_series_new' => ['/en/admin/series/new', [200, 403]];
-        yield 'admin_subscriber_new' => ['/en/admin/subscriber/new', [200, 403]];
-        yield 'admin_tag_new' => ['/en/admin/tag/new', [200, 403]];
-        yield 'admin_user_new' => ['/en/admin/user/new', [200, 403]];
+        // new pages (anonymous visitors can't create content)
+        yield 'admin_plant_new' => ['/en/admin/plant/new', [403]];
+        yield 'admin_supply_new' => ['/en/admin/supply/new', [403]];
+        yield 'admin_family_new' => ['/en/admin/family/new', [403]];
+        yield 'admin_tag_new' => ['/en/admin/tag/new', [403]];
+        yield 'admin_supplier_new' => ['/en/admin/supplier/new', [403]];
+        yield 'admin_customer_new' => ['/en/admin/customer/new', [403]];
+        yield 'admin_order_new' => ['/en/admin/order/new', [403]];
+        yield 'admin_review_new' => ['/en/admin/review/new', [403]];
+        yield 'admin_pending_review_new' => ['/en/admin/pending-review/new', [403]];
+        yield 'admin_user_new' => ['/en/admin/user/new', [403]];
     }
 
-    /**
-     * Test entity detail pages.
-     *
-     * @dataProvider entityDetailUrlProvider
-     */
-    public function testEntityDetailPages(string $entityClass, string $urlPattern): void
+    // anonymous visitors get a 403 on these pages, so this is what really renders the forms
+    #[DataProvider('newPageUrlProvider')]
+    public function testNewPagesAsAdmin(string $url, int $expectedCode): void
     {
-        $client = static::createClient();
-
-        /** @var EntityManagerInterface $em */
-        $em = static::getContainer()->get(EntityManagerInterface::class);
-        $entity = $em->getRepository($entityClass)->findOneBy([]);
-
-        if (null === $entity) {
-            $this->markTestSkipped(sprintf('No %s entity found in database', $entityClass));
-        }
-
-        $url = sprintf($urlPattern, $entity->getId());
+        $client = $this->createClientLoggedInAsAdmin();
         $client->request('GET', $url);
 
-        // Detail pages should return 200 or 403 (never 500)
-        $this->assertNoServerError($client, $url, [200, 403]);
+        $this->assertNoServerError($client, $url, [$expectedCode]);
     }
 
-    public static function entityDetailUrlProvider(): iterable
+    public static function newPageUrlProvider(): iterable
     {
-        yield 'category_detail' => [Category::class, '/en/admin/category/%d'];
-        yield 'comment_detail' => [Comment::class, '/en/admin/comment/%d'];
-        yield 'post_detail' => [Post::class, '/en/admin/post/%d'];
-        yield 'series_detail' => [Series::class, '/en/admin/series/%d'];
-        yield 'subscriber_detail' => [Subscriber::class, '/en/admin/subscriber/%d'];
-        yield 'tag_detail' => [Tag::class, '/en/admin/tag/%d'];
-        yield 'user_detail' => [User::class, '/en/admin/user/%d'];
+        yield 'plant_new' => ['/en/admin/plant/new', 200];
+        yield 'supply_new' => ['/en/admin/supply/new', 200];
+        yield 'family_new' => ['/en/admin/family/new', 200];
+        yield 'tag_new' => ['/en/admin/tag/new', 200];
+        yield 'supplier_new' => ['/en/admin/supplier/new', 200];
+        yield 'customer_new' => ['/en/admin/customer/new', 200];
+        yield 'order_new' => ['/en/admin/order/new', 200];
+        yield 'review_new' => ['/en/admin/review/new', 200];
+        // the moderation queue disables this action: reviews are created from the main listing
+        yield 'pending_review_new' => ['/en/admin/pending-review/new', 403];
+        yield 'user_new' => ['/en/admin/user/new', 200];
     }
 
-    /**
-     * Test entity edit pages.
-     *
-     * @dataProvider entityEditUrlProvider
-     */
-    public function testEntityEditPages(string $entityClass, string $urlPattern): void
+    #[DataProvider('entityQueryProvider')]
+    public function testEntityDetailPages(string $entityIdQuery, string $urlPrefix): void
     {
-        $client = static::createClient();
+        $client = $this->createClientLoggedInAsAdmin();
 
-        /** @var EntityManagerInterface $em */
-        $em = static::getContainer()->get(EntityManagerInterface::class);
-        $entity = $em->getRepository($entityClass)->findOneBy([]);
-
-        if (null === $entity) {
-            $this->markTestSkipped(sprintf('No %s entity found in database', $entityClass));
-        }
-
-        $url = sprintf($urlPattern, $entity->getId());
+        $url = sprintf('%s/%d', $urlPrefix, $this->fetchEntityId($entityIdQuery));
         $client->request('GET', $url);
 
-        // Edit pages should return 200 or 403 (never 500)
-        $this->assertNoServerError($client, $url, [200, 403]);
+        $this->assertNoServerError($client, $url, [200]);
     }
 
-    public static function entityEditUrlProvider(): iterable
+    #[DataProvider('entityQueryProvider')]
+    public function testEntityEditPages(string $entityIdQuery, string $urlPrefix): void
     {
-        yield 'category_edit' => [Category::class, '/en/admin/category/%d/edit'];
-        yield 'comment_edit' => [Comment::class, '/en/admin/comment/%d/edit'];
-        yield 'post_edit' => [Post::class, '/en/admin/post/%d/edit'];
-        yield 'series_edit' => [Series::class, '/en/admin/series/%d/edit'];
-        yield 'subscriber_edit' => [Subscriber::class, '/en/admin/subscriber/%d/edit'];
-        yield 'tag_edit' => [Tag::class, '/en/admin/tag/%d/edit'];
-        yield 'user_edit' => [User::class, '/en/admin/user/%d/edit'];
+        $client = $this->createClientLoggedInAsAdmin();
+
+        $url = sprintf('%s/%d/edit', $urlPrefix, $this->fetchEntityId($entityIdQuery));
+        $client->request('GET', $url);
+
+        $this->assertNoServerError($client, $url, [200]);
+    }
+
+    public static function entityQueryProvider(): iterable
+    {
+        yield 'plant' => ['SELECT p.id FROM App\Entity\Product p JOIN p.family f WHERE f.isPlantFamily = true', '/en/admin/plant'];
+        yield 'supply' => ['SELECT p.id FROM App\Entity\Product p JOIN p.family f WHERE f.isPlantFamily = false', '/en/admin/supply'];
+        yield 'family' => ['SELECT e.id FROM App\Entity\Family e', '/en/admin/family'];
+        yield 'tag' => ['SELECT e.id FROM App\Entity\Tag e', '/en/admin/tag'];
+        yield 'supplier' => ['SELECT e.id FROM App\Entity\Supplier e', '/en/admin/supplier'];
+        yield 'customer' => ['SELECT e.id FROM App\Entity\Customer e', '/en/admin/customer'];
+        yield 'order' => ['SELECT e.id FROM App\Entity\Order e', '/en/admin/order'];
+        yield 'review' => ['SELECT e.id FROM App\Entity\Review e', '/en/admin/review'];
+        yield 'pending_review' => ["SELECT e.id FROM App\Entity\Review e WHERE e.status = 'pending'", '/en/admin/pending-review'];
+        yield 'user' => ['SELECT e.id FROM App\Entity\User e', '/en/admin/user'];
+    }
+
+    private function createClientLoggedInAsAdmin(): KernelBrowser
+    {
+        $client = static::createClient();
+        $client->loginUser($this->getEntityManager()->getRepository(User::class)->findOneBy(['email' => DemoUser::Admin->email()]));
+
+        return $client;
+    }
+
+    private function fetchEntityId(string $entityIdQuery): int
+    {
+        $entityId = $this->getEntityManager()->createQuery($entityIdQuery)->setMaxResults(1)->getOneOrNullResult(AbstractQuery::HYDRATE_SINGLE_SCALAR);
+        $this->assertNotNull($entityId, sprintf('The query "%s" found nothing. Regenerate the fixtures.', $entityIdQuery));
+
+        return (int) $entityId;
+    }
+
+    private function getEntityManager(): EntityManagerInterface
+    {
+        return static::getContainer()->get(EntityManagerInterface::class);
     }
 
     private function assertNoServerError(KernelBrowser $client, string $url, array $acceptedCodes): void
     {
         $statusCode = $client->getResponse()->getStatusCode();
-
-        // Ensure no 5xx server error
         $this->assertLessThan(
             500,
             $statusCode,
             sprintf('URL "%s" returned server error %d', $url, $statusCode)
         );
-
-        // Verify it's one of the expected codes
         $this->assertContains(
             $statusCode,
             $acceptedCodes,

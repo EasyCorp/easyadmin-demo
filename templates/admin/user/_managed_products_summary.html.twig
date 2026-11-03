@@ -1,0 +1,22 @@
+{% set products = field.value %}
+{% set published = products|filter(product => product.isPublished)|length %}
+{% set drafts = products|filter(product => product.isDraft)|length %}
+
+<div class="managed-products-summary d-flex align-items-center gap-3">
+    <span class="d-flex align-items-center gap-1" title="{{ 'product.status.published'|trans }}">
+        <twig:ea:Icon name="circle-check" class="text-success" />
+        <span>{{ published }}</span>
+    </span>
+    <span class="d-flex align-items-center gap-1" title="{{ 'product.status.draft'|trans }}">
+        <twig:ea:Icon name="pencil" class="text-secondary" />
+        <span>{{ drafts }}</span>
+    </span>
+    {# plants and supplies have different listings, so each one gets its own link #}
+    {% for route, label in {admin_plant_index: 'entity.plants', admin_supply_index: 'entity.supplies'} %}
+        {% if products|filter(product => product.family.isPlantFamily == ('admin_plant_index' == route))|length > 0 %}
+            <a href="{{ path(route, {filters: {manager: {comparison: '=', value: entity.instance.id}}}) }}" class="small">
+                {{ label|trans }} <span aria-hidden="true">&rarr;</span>
+            </a>
+        {% endif %}
+    {% endfor %}
+</div>

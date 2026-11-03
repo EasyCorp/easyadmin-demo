@@ -1,0 +1,22 @@
+{% set review = entity.instance %}
+{% set customer = review.customer %}
+
+<div class="d-flex align-items-start gap-2">
+    <img src="{{ avatar_url(customer.avatar, customer.email, 32) }}"
+         alt=""
+         class="rounded-circle"
+         width="32"
+         height="32">
+
+    <div class="flex-grow-1">
+        <div class="review-preview-content lh-base">
+            {{ review.content|striptags|u.truncate(100, '...') }}
+        </div>
+
+        <div class="d-flex align-items-center gap-2 mt-1">
+            <a href="{{ path('admin_customer_detail', {entityId: customer.id}) }}"><small class="fw-medium">{{ customer.name }}</small></a>
+            <small class="text-muted" aria-hidden="true">•</small>
+            <small class="text-muted">{{ review.publishedAt|format_datetime('medium', 'short') }}</small>
+        </div>
+    </div>
+</div>

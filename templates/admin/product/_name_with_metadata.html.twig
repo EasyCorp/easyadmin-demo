@@ -1,0 +1,18 @@
+{% set product = entity.instance %}
+{% set detailRoute = product.family.isPlantFamily ? 'admin_plant_detail' : 'admin_supply_detail' %}
+
+<div class="d-flex align-items-center gap-2">
+    {% if product.isFeatured %}
+        <twig:ea:Icon name="star" class="text-warning" title="{{ 'product.isFeatured'|trans }}" />
+    {% endif %}
+
+    <a href="{{ path(detailRoute, {entityId: product.id}) }}">
+        {{ product.name }}
+    </a>
+</div>
+
+{% if product.botanicalName %}
+    <small class="d-block text-muted fst-italic">{{ product.botanicalName }}</small>
+{% elseif product.supplier %}
+    <small class="d-block text-muted">{{ product.supplier.name }}</small>
+{% endif %}

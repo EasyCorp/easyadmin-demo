@@ -28,17 +28,26 @@ It's also a learning tool for developers who want to understand how to use EasyA
 composer install  # Install PHP dependencies
 ```
 
+The `Makefile` has the common tasks. Run `make` to list them:
+
+```bash
+make test      # Run the tests
+make lint      # Check code style, templates, config, translations and schema
+make check     # Run lint and test
+make fixtures  # Recreate the database with new demo data
+```
+
 ### Pre-Commit Checklist
 
 Before submitting changes, run these commands to verify them:
 
 If PHP code changed:
-- [ ] `php-cs-fixer fix --dry-run` shows no issues
+- [ ] `./vendor/bin/php-cs-fixer fix --dry-run` shows no issues
 - [ ] Run tests with:
   ```bash
-  ./vendor/bin/simple-phpunit                    # All tests
-  ./vendor/bin/simple-phpunit tests/Field/       # Specific directory
-  ./vendor/bin/simple-phpunit --filter=testName  # Specific test
+  ./vendor/bin/phpunit                    # All tests
+  ./vendor/bin/phpunit tests/Field/       # Specific directory
+  ./vendor/bin/phpunit --filter=testName  # Specific test
   ```
 
 If Twig templates changed:
@@ -184,3 +193,16 @@ Avoid these common mistakes:
 - Avoid: "just", "obviously", "easy", "simply"
 - Realistic examples (no foo/bar placeholders)
 - Write for non-native English speakers: use simple vocabulary, avoid idioms, and complex sentence structures
+
+<easyadmin-guidelines>
+This project uses EasyAdmin 5.10.0.
+
+Before creating or modifying admin dashboards, CRUD controllers, fields, actions,
+filters or their tests, read and follow the `easyadmin` skill at `.agents/skills/easyadmin/SKILL.md`.
+
+Prefer the makers (`make:admin:dashboard`, `make:admin:crud`) to generate the
+initial classes instead of writing them from scratch.
+
+Team conventions for EasyAdmin, if any, are in the `## EasyAdmin conventions`
+section of this file, outside this block.
+</easyadmin-guidelines>

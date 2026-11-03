@@ -1,0 +1,14 @@
+{# used on the detail page of families, tags and suppliers, which any visitor can see, so it hides unpublished products #}
+{% set products = field.value|filter(product => is_granted('PRODUCT_VIEW', product)) %}
+
+<ul class="list-unstyled mb-0">
+    {% for product in products %}
+        {% set detailRoute = product.family.isPlantFamily ? 'admin_plant_detail' : 'admin_supply_detail' %}
+        <li class="d-flex align-items-center gap-2 py-1">
+            <a href="{{ path(detailRoute, {entityId: product.id}) }}">{{ product.name }}</a>
+            <twig:ea:Badge :color="product.status.color">{{ product.status.label|trans }}</twig:ea:Badge>
+        </li>
+    {% else %}
+        <li class="text-muted">{{ 'product.none'|trans }}</li>
+    {% endfor %}
+</ul>

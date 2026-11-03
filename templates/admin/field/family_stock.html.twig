@@ -1,0 +1,42 @@
+{# @var ea \EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext #}
+{# @var field \EasyCorp\Bundle\EasyAdminBundle\Dto\FieldDto #}
+{# @var entity \EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto #}
+
+{% set products = entity.instance.products %}
+{% set totalProducts = products|length %}
+{% set productsInStock = products|filter(product => product.stock > 0)|length %}
+{% set percentage = totalProducts > 0 ? ((productsInStock / totalProducts) * 100)|round : 0 %}
+
+{% set showPercentage = field.customOptions.get('showPercentage') %}
+{% set showCount = field.customOptions.get('showCount') %}
+{% set barHeight = field.customOptions.get('barHeight') %}
+
+<div class="family-stock-field">
+    <div class="progress" style="block-size: {{ barHeight }};">
+        <div class="progress-bar"
+             role="progressbar"
+             style="inline-size: {{ percentage }}%; background-color: var(--ea-primary);"
+             aria-label="{{ 'family.stock'|trans }}"
+             aria-valuenow="{{ percentage }}"
+             aria-valuemin="0"
+             aria-valuemax="100">
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center mt-1">
+        {% if showCount %}
+            <small class="text-muted">
+                <twig:ea:Badge color="success">{{ productsInStock }}</twig:ea:Badge>
+                /
+                <twig:ea:Badge>{{ totalProducts }}</twig:ea:Badge>
+                {{ 'family.products_in_stock'|trans }}
+            </small>
+        {% endif %}
+
+        {% if showPercentage %}
+            <small class="text-muted">
+                {{ percentage }}%
+            </small>
+        {% endif %}
+    </div>
+</div>

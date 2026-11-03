@@ -19,14 +19,14 @@ class Tag
     private ?string $name = null;
 
     /**
-     * @var Collection<int, Post>
+     * @var Collection<int, Product>
      */
-    #[ORM\ManyToMany(targetEntity: Post::class, mappedBy: 'tags')]
-    private Collection $posts;
+    #[ORM\ManyToMany(targetEntity: Product::class, mappedBy: 'tags')]
+    private Collection $products;
 
     public function __construct()
     {
-        $this->posts = new ArrayCollection();
+        $this->products = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -52,27 +52,27 @@ class Tag
     }
 
     /**
-     * @return Collection<int, Post>
+     * @return Collection<int, Product>
      */
-    public function getPosts(): Collection
+    public function getProducts(): Collection
     {
-        return $this->posts;
+        return $this->products;
     }
 
-    public function addPost(Post $post): static
+    public function addProduct(Product $product): static
     {
-        if (!$this->posts->contains($post)) {
-            $this->posts->add($post);
-            $post->addTag($this);
+        if (!$this->products->contains($product)) {
+            $this->products->add($product);
+            $product->addTag($this);
         }
 
         return $this;
     }
 
-    public function removePost(Post $post): static
+    public function removeProduct(Product $product): static
     {
-        if ($this->posts->removeElement($post)) {
-            $post->removeTag($this);
+        if ($this->products->removeElement($product)) {
+            $product->removeTag($this);
         }
 
         return $this;
