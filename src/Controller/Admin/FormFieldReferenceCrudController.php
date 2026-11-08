@@ -110,7 +110,7 @@ class FormFieldReferenceCrudController extends AbstractCrudController
             CollectionField::new('collectionComplex', 'field.collection_complex')->setFormTypeOption('entry_type', CollectionComplexType::class)->setEntryIsComplex(true),
 
             FormField::addFieldset('field_group.image'),
-            ImageField::new('image', 'field.image')->setUploadDir('/public/images/'),
+            ImageField::new('image', 'field.image')->setUploadDir('public/images/'),
 
             FormField::addFieldset('field_group.other'),
             IdField::new('id', 'field.id')->setColumns(2),

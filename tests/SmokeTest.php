@@ -42,6 +42,8 @@ class SmokeTest extends WebTestCase
         yield 'admin_dashboard_en' => ['/en/admin', [200]];
         yield 'admin_dashboard_es' => ['/es/admin', [200]];
 
+        yield 'admin_field_reference' => ['/en/admin/form-field-reference/new', [200]];
+
         // Admin index pages (publicly accessible in this demo)
         yield 'admin_category_index' => ['/en/admin/category', [200]];
         yield 'admin_comment_index' => ['/en/admin/comment', [200]];
