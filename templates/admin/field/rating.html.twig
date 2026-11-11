@@ -1,0 +1,9 @@
+{# @var field \EasyCorp\Bundle\EasyAdminBundle\Dto\FieldDto #}
+{% set rating = field.value %}
+{% set maxRating = field.customOptions.get('maxRating') %}
+
+<span class="rating-stars" role="img" aria-label="{{ 'review.rating_value'|trans({rating: rating, max: maxRating}) }}">
+    {% for star in 1..maxRating %}
+        <twig:ea:Icon name="star" class="{{ star <= rating ? 'rating-star-filled' : 'rating-star-empty' }}" />
+    {% endfor %}
+</span>

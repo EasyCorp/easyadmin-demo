@@ -1,0 +1,4 @@
+<span class="source-code-file-path" data-path="{{ path }}">
+    {%- if '/' in path %}<span class="source-code-file-dir">{{ path|u.beforeLast('/', true) }}</span>{% endif -%}
+    <span class="source-code-file-name">{{ path|u.afterLast('/') }}</span>
+</span>

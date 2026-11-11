@@ -1,19 +1,772 @@
-h1.page-title { font-size: 21px; }
-p.description { max-width: 60ch; text-wrap: balance; }
-
-#dashboard .content-top { display: none; }
-#regenerate-fixtures .content-top { display: none; }
-
-.ea-locale-switcher {
-    padding-inline-start: var(--sidebar-menu-items-padding-left);
-    list-style: none;
+.dashboard-welcome {
+    margin-block-end: 32px;
 }
 
-.ea-locale-switcher .icon {
-    block-size: 16px;
-    color: var(--sidebar-menu-icon-color);
+.dashboard-welcome-intro {
+    font-size: var(--font-size-lg);
+    margin-block-end: 24px;
+}
+
+.dashboard-fieldset {
+    block-size: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.dashboard-fieldset .form-fieldset-title-content {
+    font-size: inherit;
+    margin: 0;
+}
+
+.dashboard-fieldset .form-fieldset-body {
+    flex-grow: 1;
+    padding-block-end: 16px;
+}
+
+.demo-user-description {
+    color: var(--text-muted);
+    font-size: var(--font-size-sm);
+}
+
+.demo-user {
+    align-items: flex-start;
+    block-size: 100%;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    display: flex;
+    flex-direction: column;
+    padding: 12px;
+}
+
+.demo-user.is-current {
+    border-color: var(--text-muted);
+}
+
+.demo-user-header {
+    align-items: center;
+    display: flex;
+    gap: 10px;
+    margin-block-end: 8px;
+}
+
+.demo-user-identity {
+    min-inline-size: 0;
+}
+
+.demo-user-name {
+    font-weight: 600;
+}
+
+.demo-user-full-name {
+    color: var(--text-muted);
+    font-size: var(--font-size-sm);
+}
+
+.demo-user-actions {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: space-between;
+}
+
+.demo-user-description {
+    flex-grow: 1;
+}
+
+.dashboard-languages {
+    align-content: flex-start;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.dashboard-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.dashboard-list li {
+    display: flex;
+    flex-direction: column;
+    padding-block: 8px;
+}
+
+.dashboard-list li:first-child {
+    padding-block-start: 0;
+}
+
+.dashboard-list li:last-child {
+    padding-block-end: 0;
+}
+
+.dashboard-list li + li {
+    border-block-start: 1px solid var(--border-color);
+}
+
+.dashboard-list-author {
+    align-items: center;
+    display: flex;
+    gap: 6px;
+    margin-block-start: 6px;
+}
+
+.dashboard-list li.dashboard-list-product {
+    align-items: center;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.dashboard-list-product img {
+    border-radius: var(--border-radius);
     flex-shrink: 0;
-    inline-size: 1.25em;
-    margin-inline-end: 10px;
-    text-align: center;
+    object-fit: cover;
+}
+
+.dashboard-list-product-details {
+    display: flex;
+    flex-direction: column;
+    min-inline-size: 0;
+}
+
+.dashboard-stats {
+    font-size: var(--font-size-sm);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.dashboard-stats li + li {
+    border-block-start: 1px solid var(--border-color);
+}
+
+.dashboard-stats a,
+.dashboard-stats .dashboard-stat {
+    color: var(--text-muted);
+    display: flex;
+    gap: 12px;
+    justify-content: space-between;
+    padding-block: 10px;
+    text-decoration: none;
+}
+
+.dashboard-stats li:first-child a,
+.dashboard-stats li:first-child .dashboard-stat {
+    padding-block-start: 0;
+}
+
+.dashboard-stats li:last-child a,
+.dashboard-stats li:last-child .dashboard-stat {
+    padding-block-end: 0;
+}
+
+.dashboard-stats a:hover {
+    color: var(--text-color);
+}
+
+.dashboard-stats strong {
+    color: var(--text-color);
+    font-weight: 600;
+}
+
+/* EasyAdmin separates adjacent badges, and the CSS selector ignores the slash between these two */
+.family-stock-field .badge + .badge {
+    margin-inline-start: 0;
+}
+
+.feature-tour-group {
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    margin-block-end: 24px;
+}
+
+.feature-tour-item {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 12px 16px;
+}
+
+.feature-tour-item + .feature-tour-item {
+    border-block-start: 1px solid var(--border-color);
+}
+
+.feature-tour-main {
+    align-items: flex-start;
+    display: flex;
+    gap: 12px;
+}
+
+.feature-tour-icon {
+    align-items: center;
+    background: color-mix(in oklch, var(--feature-tour-color) 8%, transparent);
+    border-radius: var(--border-radius-lg);
+    color: var(--feature-tour-color);
+    display: flex;
+    flex-shrink: 0;
+    font-size: 20px;
+    block-size: 40px;
+    inline-size: 40px;
+    justify-content: center;
+}
+
+.ea-dark-scheme .feature-tour-icon {
+    background: color-mix(in oklch, var(--feature-tour-color) 14%, transparent);
+}
+
+.feature-tour-icon svg {
+    display: block;
+}
+
+.feature-tour-group-fields {
+    --feature-tour-color: var(--blue-600);
+}
+
+.ea-dark-scheme .feature-tour-group-fields {
+    --feature-tour-color: var(--blue-400);
+}
+
+.feature-tour-group-filters {
+    --feature-tour-color: var(--amber-600);
+}
+
+.ea-dark-scheme .feature-tour-group-filters {
+    --feature-tour-color: var(--amber-400);
+}
+
+.feature-tour-group-actions {
+    --feature-tour-color: var(--violet-600);
+}
+
+.ea-dark-scheme .feature-tour-group-actions {
+    --feature-tour-color: var(--violet-400);
+}
+
+.feature-tour-group-security {
+    --feature-tour-color: var(--rose-600);
+}
+
+.ea-dark-scheme .feature-tour-group-security {
+    --feature-tour-color: var(--rose-400);
+}
+
+.feature-tour-group-design {
+    --feature-tour-color: var(--fuchsia-600);
+}
+
+.ea-dark-scheme .feature-tour-group-design {
+    --feature-tour-color: var(--fuchsia-400);
+}
+
+.feature-tour-group-logic {
+    --feature-tour-color: var(--teal-600);
+}
+
+.ea-dark-scheme .feature-tour-group-logic {
+    --feature-tour-color: var(--teal-400);
+}
+
+.feature-tour-name {
+    font-weight: 600;
+}
+
+.feature-tour-description {
+    color: var(--text-muted);
+    font-size: var(--font-size-sm);
+}
+
+.feature-tour-links {
+    display: flex;
+    flex-shrink: 0;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+
+@media (min-width: 992px) {
+    .feature-tour-item {
+        align-items: center;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+}
+
+/* card listing: below this width, EasyAdmin already shows each row as a block and offers a sort menu */
+@media (min-width: 768px) {
+    .family-cards table.datagrid,
+    .family-cards table.datagrid thead {
+        display: block;
+    }
+
+    .family-cards table.datagrid thead tr {
+        border-block-end: 1px solid var(--border-color);
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px 24px;
+    }
+
+    .family-cards table.datagrid thead th {
+        border: 0;
+        box-shadow: none;
+        display: block;
+        padding-inline: 0;
+    }
+
+    .family-cards table.datagrid thead th:not(:has(a, input)) {
+        display: none;
+    }
+
+    .family-cards table.datagrid tbody {
+        border: 0;
+        box-shadow: none;
+        display: grid;
+        gap: 20px;
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+        padding-block-start: 20px;
+    }
+
+    .family-cards table.datagrid tbody tr {
+        background: var(--form-fieldset-panel-bg);
+        border: 1px solid var(--border-color);
+        border-radius: var(--border-radius-lg);
+        display: grid;
+        gap: 8px 12px;
+        grid-template-areas:
+            'cover cover'
+            'name name'
+            'position plant'
+            'stock stock';
+        grid-template-columns: minmax(0, 1fr) auto;
+        padding-block-end: 16px;
+        position: relative;
+    }
+
+    .family-cards table.datagrid tbody tr:hover {
+        border-color: var(--text-muted);
+    }
+
+    .family-cards table.datagrid tbody td {
+        background: transparent;
+        border: 0;
+        box-shadow: none;
+        display: block;
+        padding: 0 16px;
+        text-align: start;
+    }
+
+    .family-cards table.datagrid tbody td[data-column='id'] {
+        display: none;
+    }
+
+    .family-cards table.datagrid tbody td[data-column='cover'] {
+        grid-area: cover;
+        padding: 0;
+    }
+
+    .family-cards table.datagrid tbody td[data-column='cover'] .ea-lightbox-thumbnail {
+        display: block;
+    }
+
+    .family-cards table.datagrid tbody td[data-column='cover'] .ea-lightbox-thumbnail img {
+        aspect-ratio: 4 / 3;
+        border-end-end-radius: 0;
+        border-end-start-radius: 0;
+        border-start-end-radius: var(--border-radius-lg);
+        border-start-start-radius: var(--border-radius-lg);
+        display: block;
+        inline-size: 100%;
+        max-block-size: none;
+        max-inline-size: none;
+        object-fit: cover;
+        outline: none;
+    }
+
+    .family-cards table.datagrid tbody td[data-column='name'] {
+        font-size: var(--font-size-lg);
+        font-weight: 600;
+        grid-area: name;
+        margin-block-start: 4px;
+    }
+
+    .family-cards table.datagrid tbody td[data-column='isPlantFamily'] {
+        /* flex instead of text-align, because the .text-center utility of boolean fields can't be overridden */
+        align-items: flex-start;
+        color: var(--text-muted);
+        display: flex;
+        flex-direction: column;
+        font-size: var(--font-size-sm);
+        grid-area: plant;
+        padding-inline-start: 0;
+    }
+
+    .family-cards table.datagrid tbody td[data-column='isPlantFamily']::before {
+        content: attr(data-label);
+        display: block;
+        margin-block-end: 2px;
+    }
+
+    .family-cards table.datagrid tbody td[data-column='position'] {
+        color: var(--text-muted);
+        font-size: var(--font-size-sm);
+        grid-area: position;
+    }
+
+    .family-cards table.datagrid tbody td[data-column='position']::before {
+        content: attr(data-label);
+        display: block;
+        margin-block-end: 2px;
+    }
+
+    .family-cards table.datagrid tbody td[data-column='products'] {
+        grid-area: stock;
+        margin-block-start: 4px;
+    }
+
+    .family-cards table.datagrid tbody td.batch-actions-selector {
+        background: var(--form-fieldset-panel-bg);
+        border-radius: var(--border-radius);
+        inset-block-start: 8px;
+        inset-inline-start: 8px;
+        line-height: 1;
+        padding: 4px;
+        position: absolute;
+    }
+
+    .family-cards table.datagrid tbody td.actions {
+        background: var(--form-fieldset-panel-bg);
+        border-radius: var(--border-radius);
+        inset-block-start: 8px;
+        inset-inline-end: 8px;
+        min-inline-size: 0;
+        padding: 0;
+        position: absolute;
+    }
+}
+
+/* sales */
+.order-products {
+    align-items: center;
+    display: flex;
+    gap: 4px;
+    margin-block-start: 4px;
+}
+
+.order-products img {
+    border-radius: var(--border-radius);
+    display: block;
+    flex-shrink: 0;
+    object-fit: cover;
+}
+
+.order-products .badge {
+    margin-inline-end: 2px;
+}
+
+.order-line-product {
+    align-items: center;
+    display: flex;
+    gap: 8px;
+}
+
+.order-line-product img {
+    border-radius: var(--border-radius);
+    flex-shrink: 0;
+    object-fit: cover;
+}
+
+.order-progress {
+    --order-progress-done-color: var(--ea-primary);
+    --order-progress-empty-color: color-mix(in oklch, var(--text-muted) 55%, transparent);
+
+    align-items: center;
+    display: flex;
+    margin-block-end: 6px;
+}
+
+.order-progress-step {
+    background: transparent;
+    border: 1.5px solid var(--order-progress-empty-color);
+    border-radius: 50%;
+    block-size: 9px;
+    flex-shrink: 0;
+    inline-size: 9px;
+}
+
+/* the primary color is dark for buttons with light text, so it needs to be lighter on dark backgrounds */
+.ea-dark-scheme .order-progress {
+    --order-progress-done-color: color-mix(in oklch, var(--ea-primary) 60%, white);
+}
+
+.order-progress-step.is-done {
+    background: var(--order-progress-done-color);
+    border-color: var(--order-progress-done-color);
+}
+
+/* the line between two steps takes the color of the step that it reaches */
+.order-progress-step + .order-progress-step {
+    margin-inline-start: 22px;
+    position: relative;
+}
+
+.order-progress-step + .order-progress-step::before {
+    background: var(--order-progress-empty-color);
+    block-size: 2px;
+    content: '';
+    inline-size: 22px;
+    inset-block-start: calc(50% - 1px);
+    inset-inline-end: 100%;
+    position: absolute;
+}
+
+.order-progress-step.is-done + .order-progress-step.is-done::before {
+    background: var(--order-progress-done-color);
+}
+
+.rating-stars {
+    display: inline-flex;
+    gap: 2px;
+    vertical-align: middle;
+}
+
+.rating-star-filled {
+    color: var(--color-warning);
+}
+
+/* the path of the icon defines fill="none", so it must be overridden in the path itself */
+.rating-star-filled path {
+    fill: currentColor;
+}
+
+.rating-star-empty {
+    color: var(--text-muted);
+    opacity: 0.4;
+}
+
+@media print {
+    .order-print .sidebar-wrapper,
+    .order-print .responsive-header,
+    .order-print .ea-layout-toggle,
+    .order-print .content-top,
+    .order-print .page-actions,
+    .order-print #flash-messages {
+        display: none;
+    }
+
+    .order-print .wrapper {
+        display: block;
+    }
+
+    .order-print .main-content {
+        margin-inline-start: 0;
+    }
+}
+
+/* even the largest modal of EasyAdmin (800px) is narrow for reading code */
+#source-code-modal .modal-dialog {
+    --bs-modal-width: 1200px;
+}
+
+/* tabs don't wrap, so a long list of files never takes the height that the tabs save */
+.source-code-tabs {
+    display: flex;
+    gap: 8px;
+    margin-block-end: 12px;
+    overflow-x: auto;
+    padding-block-end: 2px;
+    scrollbar-width: thin;
+}
+
+/* on narrow screens, the next tab always peeks out to show that there are more files */
+.source-code-tab {
+    flex-shrink: 0;
+    max-inline-size: 85%;
+    position: relative;
+}
+
+.source-code-tab-button {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    color: var(--text-muted);
+    display: block;
+    max-inline-size: 100%;
+    padding-block: 8px;
+    padding-inline: 14px 40px;
+    text-align: start;
+}
+
+.source-code-tab-button:hover {
+    border-color: var(--border-secondary-color);
+    color: var(--text-color);
+}
+
+.source-code-tab-button[aria-selected='true'] {
+    background: var(--dropdown-link-hover-bg);
+    border-color: var(--border-secondary-color);
+    color: var(--text-color);
+}
+
+/* in the dark scheme, the default border color is the same as the modal background */
+.ea-dark-scheme .source-code-tab-button,
+.ea-dark-scheme .source-code-file pre {
+    border-color: var(--form-fieldset-border-color);
+}
+
+.ea-dark-scheme .source-code-tab-button:hover,
+.ea-dark-scheme .source-code-tab-button[aria-selected='true'] {
+    border-color: var(--border-secondary-color);
+}
+
+.source-code-tab-button:focus-visible {
+    outline: 2px solid var(--ea-primary);
+    outline-offset: 2px;
+}
+
+.source-code-file-header {
+    align-items: flex-end;
+    display: flex;
+    gap: 16px;
+    justify-content: space-between;
+    margin-block-end: 8px;
+}
+
+.source-code-file-path {
+    display: flex;
+    flex-direction: column;
+    font-variant-ligatures: none;
+    min-inline-size: 0;
+}
+
+.source-code-file-dir,
+.source-code-file-name {
+    font-family: var(--font-family-monospace);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.source-code-file-dir {
+    font-size: var(--font-size-xs);
+    opacity: 0.75;
+}
+
+.source-code-file-name {
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+}
+
+.source-code-file-link {
+    align-items: center;
+    color: var(--text-muted);
+    display: inline-flex;
+    flex-shrink: 0;
+}
+
+.source-code-file-link:hover {
+    color: var(--text-color);
+}
+
+/* placed over the second line of the tab button, next to the file name */
+.source-code-tab .source-code-file-link {
+    inset-block-end: 9px;
+    inset-inline-end: 12px;
+    position: absolute;
+}
+
+.source-code-file pre {
+    background: var(--form-fieldset-panel-bg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    font-size: var(--font-size-sm);
+    margin: 0;
+    overflow: auto;
+    padding: 12px;
+}
+
+/* a fixed height keeps the modal from changing its size when switching between short and long files */
+.source-code-file.tab-pane pre {
+    block-size: 60vh;
+}
+
+.source-code-file:not(.tab-pane) pre {
+    max-block-size: 60vh;
+}
+
+.source-code-file code {
+    background: transparent;
+    color: var(--text-color);
+    display: block;
+    font-family: var(--font-family-monospace);
+    padding: 0;
+    position: relative;
+}
+
+.source-code-files[aria-busy='true'] {
+    min-block-size: 50vh;
+}
+
+/* the marks are positioned by line number, so all lines must have the same height */
+.source-code-lines {
+    display: block;
+    inline-size: max-content;
+    line-height: 1.5;
+    min-inline-size: 100%;
+    position: relative;
+}
+
+.source-code-mark {
+    background: color-mix(in srgb, var(--ea-primary) 15%, transparent);
+    block-size: calc(var(--num-lines) * 1lh);
+    border-inline-start: 3px solid var(--ea-primary);
+    inset-block-start: calc((var(--first-line) - 1) * 1lh);
+    inset-inline: -12px 0;
+    pointer-events: none;
+    position: absolute;
+}
+
+.source-code-file .hljs-keyword,
+.source-code-file .hljs-built_in,
+.source-code-file .hljs-literal {
+    color: var(--code-editor-keyword-color);
+}
+
+.source-code-file .hljs-string {
+    color: var(--code-editor-string-color);
+}
+
+.source-code-file .hljs-comment,
+.source-code-file .hljs-doctag {
+    color: var(--code-editor-comment-color);
+}
+
+.source-code-file .hljs-title,
+.source-code-file .hljs-meta {
+    color: var(--code-editor-definition-color);
+}
+
+.source-code-file .hljs-variable {
+    color: var(--code-editor-variable-color);
+}
+
+.shop-logo {
+    align-items: center;
+    display: flex;
+    gap: 8px;
+}
+
+.shop-logo img {
+    flex-shrink: 0;
+}
+
+.demo-notice {
+    color: var(--text-color);
+    font-size: var(--font-size-xs);
+    line-height: var(--line-height-normal);
+    /* keeps the text above the Symfony web debug toolbar, which is fixed to the bottom of the window */
+    margin-block: 0 40px;
+}
+
+.review-preview-content {
+    max-inline-size: 60ch;
+    overflow-wrap: break-word;
 }

@@ -1,0 +1,9 @@
+{% set status = entity.instance.status %}
+
+<div class="order-progress" aria-hidden="true">
+    {% for step in 1..4 %}
+        <span class="order-progress-step {{ step <= status.progressStep ? 'is-done' }}"></span>
+    {% endfor %}
+</div>
+
+<twig:ea:Badge color="{{ status.color }}" size="sm">{{ status.label|trans }}</twig:ea:Badge>

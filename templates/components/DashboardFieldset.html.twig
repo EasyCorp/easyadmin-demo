@@ -1,0 +1,15 @@
+{% props icon, title %}
+
+<section {{ attributes.defaults({class: 'form-fieldset dashboard-fieldset'}) }}>
+    <div class="form-fieldset-header">
+        <div class="form-fieldset-title">
+            <h2 class="not-collapsible form-fieldset-title-content">
+                <twig:ea:Icon name="{{ icon }}" class="form-fieldset-icon" />
+                {{ title }}
+            </h2>
+        </div>
+    </div>
+    <div class="form-fieldset-body">
+        <div>{% block content %}{% endblock %}</div>
+    </div>
+</section>

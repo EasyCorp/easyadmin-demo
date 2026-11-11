@@ -1,0 +1,25 @@
+{% set customer = entity.instance %}
+
+<div class="d-flex align-items-center gap-2">
+    <img src="{{ avatar_url(customer.avatar, customer.email, 32) }}"
+         alt=""
+         class="rounded-circle"
+         width="32"
+         height="32">
+
+    <div>
+        <div class="fw-medium">{{ customer.name }}</div>
+
+        <div class="d-flex gap-1 mt-1">
+            {% if customer.isConfirmed %}
+                <twig:ea:Badge color="success" size="sm" icon="circle-check">{{ 'customer.status.confirmed'|trans }}</twig:ea:Badge>
+            {% else %}
+                <twig:ea:Badge color="warning" size="sm" icon="clock">{{ 'customer.status.pending'|trans }}</twig:ea:Badge>
+            {% endif %}
+
+            {% if customer.isAcceptsNewsletter %}
+                <twig:ea:Badge size="sm" icon="mail">{{ 'customer.status.newsletter'|trans }}</twig:ea:Badge>
+            {% endif %}
+        </div>
+    </div>
+</div>

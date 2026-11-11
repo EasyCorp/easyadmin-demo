@@ -1,0 +1,18 @@
+{% set manager = field.value %}
+
+{% if manager %}
+<div class="d-flex align-items-center gap-2">
+    <img src="{{ avatar_url(manager.avatar, manager.email, 32) }}" class="rounded-circle" width="32" height="32" alt="" />
+
+    <div class="lh-sm">
+        <div class="mb-1">{{ manager.fullName }}</div>
+        {% if 'ROLE_ADMIN' in manager.roles %}
+            <twig:ea:Badge color="info" size="sm">{{ 'user.role.admin'|trans }}</twig:ea:Badge>
+        {% elseif 'ROLE_EDITOR' in manager.roles %}
+            <twig:ea:Badge color="warning" size="sm">{{ 'user.role.editor'|trans }}</twig:ea:Badge>
+        {% endif %}
+    </div>
+</div>
+{% else %}
+<span class="text-muted">{{ 'product.no_manager'|trans }}</span>
+{% endif %}

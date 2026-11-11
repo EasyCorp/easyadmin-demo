@@ -1,0 +1,22 @@
+{% set products = entity.instance.products %}
+{% set count = products|length %}
+{% set published = products|filter(product => product.isPublished)|length %}
+{% set maxProducts = 12 %}
+{% set barWidth = min((count / maxProducts * 100)|round, 100) %}
+
+<div class="d-flex align-items-center gap-2">
+    <div class="progress" style="inline-size: 120px; block-size: 6px;">
+        <div class="progress-bar"
+             role="progressbar"
+             style="inline-size: {{ barWidth }}%; background-color: var(--ea-primary);"
+             aria-label="{{ 'tag.products'|trans }}"
+             aria-valuenow="{{ min(count, maxProducts) }}"
+             aria-valuemin="0"
+             aria-valuemax="{{ maxProducts }}">
+        </div>
+    </div>
+    <twig:ea:Badge>{{ count }}</twig:ea:Badge>
+    {% if published != count %}
+        <small class="text-muted">{{ 'tag.published_count'|trans({count: published}) }}</small>
+    {% endif %}
+</div>

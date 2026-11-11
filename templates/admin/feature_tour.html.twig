@@ -1,0 +1,38 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+
+{% block body_id 'feature-tour' %}
+
+{% block content_title %}{{ 'tour.title'|trans }}{% endblock %}
+
+{% block main %}
+    <p>{{ 'tour.description'|trans }}</p>
+
+    {% for group, features in groups %}
+        <h2>{{ ('tour.group.' ~ group)|trans }}</h2>
+
+        <div class="feature-tour-group feature-tour-group-{{ group }}" data-ea-not-prose>
+            {% for feature in features %}
+                {% set name = feature[0] %}
+                <div class="feature-tour-item">
+                    <div class="feature-tour-main">
+                        <span class="feature-tour-icon" aria-hidden="true"><twig:ea:Icon name="{{ feature.icon }}" /></span>
+                        <div class="feature-tour-details">
+                            <div class="feature-tour-name">{{ ('tour.feature.' ~ name ~ '.name')|trans }}</div>
+                            <div class="feature-tour-description">{{ ('tour.feature.' ~ name ~ '.description')|trans }}</div>
+                        </div>
+                    </div>
+
+                    <div class="feature-tour-links">
+                        {% if feature[3] is not defined or is_granted(feature[3]) %}
+                            <twig:ea:Button htmlElement="a" size="sm" icon="eye" href="{{ path(feature[1][0], feature[1][1] ?? {}) }}">{{ 'tour.see_it'|trans }}</twig:ea:Button>
+                        {% endif %}
+                        <twig:ea:Button size="sm" variant="ghost" icon="code" data-bs-toggle="modal" data-bs-target="#source-code-modal" data-source-code-url="{{ path('admin_feature_tour_code', {feature: name}) }}" data-source-code-title="{{ ('tour.feature.' ~ name ~ '.name')|trans }}">{{ 'tour.code'|trans }}</twig:ea:Button>
+                        <twig:ea:Button htmlElement="a" size="sm" variant="ghost" icon="book-open" href="{{ docs_url ~ feature[2] ~ '.html' }}" target="_blank" rel="noopener">{{ 'tour.docs'|trans }}</twig:ea:Button>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endfor %}
+
+    {{ include('admin/_source_code_modal.html.twig', with_context: false) }}
+{% endblock %}

@@ -1,0 +1,14 @@
+{# when "files" is not defined, the button that opens the modal loads them from its "data-source-code-url" attribute #}
+<twig:ea:Modal id="source-code-modal" size="xl" title="{{ 'action.view_source'|trans }}">
+    <twig:block name="body">
+        <div class="source-code-files">
+            {% if files is defined %}
+                {{ include('admin/_source_code_files.html.twig', {files: files}, with_context: false) }}
+            {% endif %}
+        </div>
+        <p class="source-code-error text-danger" role="alert" hidden>{{ 'action.view_source_error'|trans }}</p>
+    </twig:block>
+    <twig:block name="footer">
+        <twig:ea:Modal:Close>{{ 'action.close'|trans }}</twig:ea:Modal:Close>
+    </twig:block>
+</twig:ea:Modal>

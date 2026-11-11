@@ -1,15 +1,16 @@
-{% extends '@EasyAdmin/layout.html.twig' %}
+{% extends '@EasyAdmin/page/content.html.twig' %}
 
 {% block body_id 'regenerate-fixtures' %}
 
+{% block content_title %}{{ 'fixtures.title'|trans }}{% endblock %}
+
 {% block main %}
-    <h1 class="page-title">{{ 'fixtures.title'|trans }}</h1>
+    <p>{{ 'fixtures.description'|trans }}</p>
 
-    <p class="description">{{ 'fixtures.description'|trans }}</p>
-
-    <p class="description">{{ 'fixtures.description_extended'|trans|raw }}</p>
+    <p>{{ 'fixtures.description_extended'|trans|raw }}</p>
 
     <form method="post" action="{{ path('admin_regenerate_fixtures') }}">
-        <button type="submit" class="btn btn-primary">{{ 'fixtures.submit'|trans }}</button>
+        <input type="hidden" name="_token" value="{{ csrf_token('regenerate_fixtures') }}">
+        <twig:ea:Button color="primary">{{ 'fixtures.submit'|trans }}</twig:ea:Button>
     </form>
 {% endblock %}

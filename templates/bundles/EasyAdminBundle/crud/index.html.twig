@@ -1,0 +1,9 @@
+{% extends '@!EasyAdmin/crud/index.html.twig' %}
+
+{% block main %}
+    {{ parent() }}
+
+    {% if global_actions|filter(item => not item.isActionGroup and 'viewSource' == item.name) is not empty %}
+        {{ include('admin/_source_code_modal.html.twig', {files: source_code_files(ea.crud.controllerFqcn)}, with_context: false) }}
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,12 @@
+{% set order = entity.instance %}
+
+<div class="fw-medium">{{ order.number }}</div>
+
+<div class="order-products">
+    <twig:ea:Badge size="sm">{{ order.lines|length }}</twig:ea:Badge>
+    {% for line in order.lines|slice(0, 5) %}
+        {% if line.product.image %}
+            <img src="{{ asset('uploads/products/' ~ line.product.image) }}" width="18" height="18" alt="" title="{{ line.product.name }}">
+        {% endif %}
+    {% endfor %}
+</div>

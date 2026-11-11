@@ -1,0 +1,42 @@
+{# @var field \EasyCorp\Bundle\EasyAdminBundle\Dto\FieldDto #}
+{# @var entity \EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto #}
+{% set order = entity.instance %}
+
+<table class="table table-sm mb-0">
+    <thead>
+        <tr>
+            <th scope="col">{{ 'order.line.product'|trans }}</th>
+            <th scope="col" class="text-end">{{ 'order.line.quantity'|trans }}</th>
+            <th scope="col" class="text-end">{{ 'order.line.unitPrice'|trans }}</th>
+            <th scope="col" class="text-end">{{ 'order.line.subtotal'|trans }}</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for line in order.lines %}
+            {% set product = line.product %}
+            <tr>
+                <td>
+                    <div class="order-line-product">
+                        {% if product.image %}
+                            <img src="{{ asset('uploads/products/' ~ product.image) }}" width="24" height="24" alt="">
+                        {% endif %}
+                        {% if is_granted('PRODUCT_VIEW', product) %}
+                            <a href="{{ path(product.family.isPlantFamily ? 'admin_plant_detail' : 'admin_supply_detail', {entityId: product.id}) }}">{{ product.name }}</a>
+                        {% else %}
+                            {{ product.name }}
+                        {% endif %}
+                    </div>
+                </td>
+                <td class="text-end">{{ line.quantity }}</td>
+                <td class="text-end">{{ (line.unitPrice / 100)|format_currency(order.currency) }}</td>
+                <td class="text-end">{{ (line.subtotal / 100)|format_currency(order.currency) }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+    <tfoot>
+        <tr>
+            <th scope="row" colspan="3" class="text-end">{{ 'order.total'|trans }}</th>
+            <td class="text-end fw-semibold">{{ (order.total / 100)|format_currency(order.currency) }}</td>
+        </tr>
+    </tfoot>
+</table>

@@ -1,0 +1,7 @@
+<div class="d-flex flex-wrap gap-1">
+    {% for tag in field.value %}
+        <twig:ea:Badge>{{ tag.name }}</twig:ea:Badge>
+    {% else %}
+        <span class="text-muted">{{ 'product.no_tags'|trans }}</span>
+    {% endfor %}
+</div>

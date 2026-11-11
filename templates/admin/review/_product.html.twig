@@ -1,0 +1,8 @@
+{# plants and supplies have different CRUD controllers, so the link depends on the product #}
+{% set product = field.value %}
+
+{% if is_granted('PRODUCT_VIEW', product) %}
+    <a href="{{ path(product.family.isPlantFamily ? 'admin_plant_detail' : 'admin_supply_detail', {entityId: product.id}) }}">{{ product.name }}</a>
+{% else %}
+    {{ product.name }}
+{% endif %}

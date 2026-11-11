@@ -10,29 +10,19 @@ use Zenstruck\Foundry\Persistence\PersistentObjectFactory;
  */
 final class TagFactory extends PersistentObjectFactory
 {
-    /**
-     * Cross-category tags that work well with diverse content.
-     */
-    private const TAGS = [
-        // Content type
-        'Tutorial',
-        'Guide',
-        'Tips',
-        'Review',
-        'Opinion',
-        'News',
-        'Interview',
-        // Audience level
-        'Beginner',
-        'Advanced',
-        // Attributes
-        'Trending',
-        'Budget',
-        'Premium',
-        'Quick Read',
-        'In-Depth',
-        'DIY',
-        'Research',
+    public const TAGS = [
+        'Low light',
+        'Bright light',
+        'Easy care',
+        'Slow growth',
+        'Fast growth',
+        'Air purifying',
+        'Drought tolerant',
+        'Humidity loving',
+        'Indoor',
+        'Outdoor',
+        'Organic',
+        'Handmade',
     ];
 
     private static int $index = 0;

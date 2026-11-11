@@ -1,0 +1,25 @@
+{# @var field \EasyCorp\Bundle\EasyAdminBundle\Dto\FieldDto #}
+{% if field.value is empty %}
+    <span class="text-muted">{{ 'customer.no_orders'|trans }}</span>
+{% else %}
+    <table class="table table-sm mb-0">
+        <thead>
+            <tr>
+                <th scope="col">{{ 'order.number'|trans }}</th>
+                <th scope="col">{{ 'order.status'|trans }}</th>
+                <th scope="col">{{ 'order.placedAt'|trans }}</th>
+                <th scope="col" class="text-end">{{ 'order.total'|trans }}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in field.value %}
+                <tr>
+                    <td><a href="{{ path('admin_order_detail', {entityId: order.id}) }}">{{ order.number }}</a></td>
+                    <td><twig:ea:Badge color="{{ order.status.color }}">{{ order.status.label|trans }}</twig:ea:Badge></td>
+                    <td>{{ order.placedAt|format_date('medium') }}</td>
+                    <td class="text-end">{{ (order.total / 100)|format_currency(order.currency) }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endif %}
